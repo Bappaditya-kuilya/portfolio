@@ -32,12 +32,6 @@ type GithubRepo = {
   archived: boolean;
 };
 
-type GithubEvent = {
-  id: string;
-  type: string;
-  created_at: string;
-};
-
 type ActivityDay = {
   date: string;
   count: number;
@@ -71,12 +65,12 @@ function getActivityTone(count: number) {
   return "bg-white/[0.04]";
 }
 
-function buildActivityDays(events: GithubEvent[]) {
+function buildActivityDays(activityDays: ActivityDay[]) {
   const days: ActivityDay[] = [];
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
-  for (let index = 83; index >= 0; index -= 1) {
+  for (let index = 364; index >= 0; index -= 1) {
     const date = new Date(today);
     date.setDate(today.getDate() - index);
     days.push({
@@ -85,11 +79,12 @@ function buildActivityDays(events: GithubEvent[]) {
     });
   }
 
-  events.forEach((event) => {
-    const day = event.created_at.slice(0, 10);
-    const activityDay = days.find((item) => item.date === day);
-    if (activityDay) {
-      activityDay.count += 1;
+  const activityLookup = new Map(activityDays.map((day) => [day.date, day.count]));
+
+  days.forEach((day) => {
+    const count = activityLookup.get(day.date);
+    if (typeof count === "number") {
+      day.count = count;
     }
   });
 
@@ -99,6 +94,38 @@ function buildActivityDays(events: GithubEvent[]) {
 function ContributionGraph({ activity }: { activity: ActivityDay[] }) {
   const total = activity.reduce((sum, day) => sum + day.count, 0);
   const activeDays = activity.filter((day) => day.count > 0).length;
+  const weeks = useMemo(() => {
+    const columns: ActivityDay[][] = [];
+
+    activity.forEach((day, index) => {
+      const weekIndex = Math.floor(index / 7);
+      if (!columns[weekIndex]) {
+        columns[weekIndex] = [];
+      }
+      columns[weekIndex].push(day);
+    });
+
+    return columns;
+  }, [activity]);
+
+  const monthLabels = useMemo(() => {
+    return weeks.map((week, index) => {
+      const firstDay = week[0];
+      if (!firstDay) {
+        return "";
+      }
+
+      const date = new Date(firstDay.date);
+      const previousDate = index > 0 ? new Date(weeks[index - 1][0]?.date ?? firstDay.date) : null;
+      const month = date.toLocaleString("en", { month: "short" });
+
+      if (index === 0 || !previousDate || previousDate.getMonth() !== date.getMonth()) {
+        return month;
+      }
+
+      return "";
+    });
+  }, [weeks]);
 
   return (
     <div className="glass-card rounded-sm p-5 lg:p-6">
@@ -129,19 +156,48 @@ function ContributionGraph({ activity }: { activity: ActivityDay[] }) {
       </div>
 
       <div className="overflow-x-auto pb-2">
-        <div className="grid w-max grid-flow-col grid-rows-7 gap-1">
-          {activity.map((day) => (
-            <div
-              key={day.date}
-              title={`${formatDate(day.date)}: ${day.count} public event${day.count === 1 ? "" : "s"}`}
-              className={`h-3 w-3 rounded-[2px] border border-white/[0.03] transition-transform duration-300 hover:scale-125 ${getActivityTone(day.count)}`}
-            />
-          ))}
+        <div className="min-w-max">
+          <div
+            className="mb-3 grid gap-1 pl-6"
+            style={{ gridTemplateColumns: `repeat(${weeks.length}, minmax(0, 1fr))` }}
+          >
+            {monthLabels.map((label, index) => (
+              <span
+                key={`${label}-${index}`}
+                className="font-inter text-[10px] uppercase tracking-[0.18em] text-foreground-muted"
+              >
+                {label}
+              </span>
+            ))}
+          </div>
+
+          <div className="flex gap-3">
+            <div className="grid grid-rows-7 gap-1 pt-[1px]">
+              {["Sun", "", "Tue", "", "Thu", "", "Sat"].map((label, index) => (
+                <span
+                  key={`${label || "spacer"}-${index}`}
+                  className="h-3 font-inter text-[10px] leading-3 text-foreground-muted"
+                >
+                  {label}
+                </span>
+              ))}
+            </div>
+
+            <div className="grid grid-flow-col grid-rows-7 gap-1">
+              {activity.map((day) => (
+                <div
+                  key={day.date}
+                  title={`${formatDate(day.date)}: ${day.count} contribution${day.count === 1 ? "" : "s"}`}
+                  className={`h-3 w-3 rounded-[2px] border border-white/[0.03] transition-transform duration-300 hover:scale-125 ${getActivityTone(day.count)}`}
+                />
+              ))}
+            </div>
+          </div>
         </div>
       </div>
 
       <div className="mt-4 flex items-center justify-between gap-4 text-foreground-muted">
-        <p className="font-inter text-xs">Public GitHub activity from recent events</p>
+        <p className="font-inter text-xs">Full GitHub contribution calendar for the last 12 months</p>
         <div className="flex items-center gap-1">
           <span className="font-inter text-[10px]">Less</span>
           {[0, 1, 3, 6, 9].map((count) => (
@@ -270,7 +326,7 @@ export default function Projects() {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
   const [repos, setRepos] = useState<GithubRepo[]>([]);
-  const [events, setEvents] = useState<GithubEvent[]>([]);
+  const [activityDays, setActivityDays] = useState<ActivityDay[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [hasGithubError, setHasGithubError] = useState(false);
 
@@ -298,21 +354,22 @@ export default function Projects() {
           });
 
         setRepos(polishedRepos);
-        setHasGithubError(false);
 
-        const eventResponse = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/events/public?per_page=100`, {
+        const contributionResponse = await fetch(`/api/github/contributions?username=${GITHUB_USERNAME}`, {
           signal: controller.signal,
-          headers: { Accept: "application/vnd.github+json" },
         });
 
-        if (eventResponse.ok) {
-          const eventData = (await eventResponse.json()) as GithubEvent[];
-          setEvents(eventData);
+        if (!contributionResponse.ok) {
+          throw new Error("GitHub contribution request failed");
         }
+
+        const contributionData = (await contributionResponse.json()) as { days: ActivityDay[] };
+        setActivityDays(contributionData.days);
+        setHasGithubError(false);
       } catch (error) {
         if (!controller.signal.aborted) {
           setRepos([]);
-          setEvents([]);
+          setActivityDays([]);
           setHasGithubError(true);
         }
       } finally {
@@ -327,7 +384,7 @@ export default function Projects() {
     return () => controller.abort();
   }, []);
 
-  const activity = useMemo(() => buildActivityDays(events), [events]);
+  const activity = useMemo(() => buildActivityDays(activityDays), [activityDays]);
   const repoCount = repos.length;
   const languageCount = new Set(repos.map((repo) => repo.language).filter(Boolean)).size;
   const totalStars = repos.reduce((sum, repo) => sum + repo.stargazers_count, 0);
