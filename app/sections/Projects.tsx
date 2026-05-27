@@ -3,7 +3,6 @@
 import { motion, useInView } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
-  ArrowRight,
   Calendar,
   Code2,
   ExternalLink,
@@ -11,7 +10,6 @@ import {
   Github,
   GitFork,
   Layers3,
-  Sparkles,
   Star,
 } from "lucide-react";
 
@@ -40,6 +38,7 @@ type ActivityDay = {
 
 type ContributionResponse = {
   days: ActivityDay[];
+  total?: number;
   source?: "public" | "authenticated";
 };
 
@@ -120,12 +119,14 @@ function getRepoLiveUrl(repo: GithubRepo) {
 
 function ContributionGraph({
   activity,
+  total,
   source,
 }: {
   activity: ActivityDay[];
+  total?: number;
   source: "public" | "authenticated";
 }) {
-  const total = activity.reduce((sum, day) => sum + day.count, 0);
+  const totalCount = total ?? activity.reduce((sum, day) => sum + day.count, 0);
   const activeDays = activity.filter((day) => day.count > 0).length;
   const weeks = useMemo(() => {
     const columns: ActivityDay[][] = [];
@@ -174,7 +175,7 @@ function ContributionGraph({
         </div>
         <div className="grid grid-cols-2 gap-3 sm:text-right">
           <div>
-            <p className="font-cinzel text-xl text-foreground sm:text-2xl">{total}</p>
+            <p className="font-cinzel text-xl text-foreground sm:text-2xl">{totalCount}</p>
             <p className="font-inter text-[10px] uppercase tracking-[0.18em] text-foreground-muted">
               Events
             </p>
@@ -278,7 +279,7 @@ function RepoCard({ repo, index }: { repo: GithubRepo; index: number }) {
           >
             <Github className="h-4 w-4" />
           </a>
-          {liveUrl ? (
+          {liveUrl && (
             <a
               href={liveUrl}
               target="_blank"
@@ -288,14 +289,6 @@ function RepoCard({ repo, index }: { repo: GithubRepo; index: number }) {
             >
               <ExternalLink className="h-4 w-4" />
             </a>
-          ) : (
-            <span
-              aria-label={`${repo.name} live project unavailable`}
-              title="Live demo not published yet"
-              className="rounded-sm border border-foreground/10 p-2 text-foreground-muted/40"
-            >
-              <ExternalLink className="h-4 w-4" />
-            </span>
           )}
         </div>
       </div>
@@ -312,15 +305,6 @@ function RepoCard({ repo, index }: { repo: GithubRepo; index: number }) {
           <span className="inline-flex items-center gap-2 rounded-sm border border-foreground/10 bg-background-secondary/70 px-3 py-1 text-xs font-inter text-foreground-dim">
             <span className="h-2 w-2 rounded-full" style={{ backgroundColor: languageColor }} />
             {repo.language}
-          </span>
-        )}
-        {liveUrl ? (
-          <span className="rounded-sm border border-emerald-400/20 bg-emerald-400/10 px-3 py-1 text-xs font-inter text-emerald-200">
-            Live demo available
-          </span>
-        ) : (
-          <span className="rounded-sm border border-foreground/10 bg-white/[0.03] px-3 py-1 text-xs font-inter text-foreground-muted">
-            No live demo yet
           </span>
         )}
         {topics.map((topic) => (
@@ -385,6 +369,7 @@ export default function Projects() {
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
   const [repos, setRepos] = useState<GithubRepo[]>([]);
   const [activityDays, setActivityDays] = useState<ActivityDay[]>([]);
+  const [contributionTotal, setContributionTotal] = useState<number | undefined>(undefined);
   const [contributionSource, setContributionSource] = useState<"public" | "authenticated">("public");
   const [isLoading, setIsLoading] = useState(true);
   const [hasGithubError, setHasGithubError] = useState(false);
@@ -428,12 +413,14 @@ export default function Projects() {
 
         const contributionData = (await contributionResponse.json()) as ContributionResponse;
         setActivityDays(contributionData.days);
+        setContributionTotal(contributionData.total);
         setContributionSource(contributionData.source === "authenticated" ? "authenticated" : "public");
         setHasGithubError(false);
       } catch (error) {
         if (!controller.signal.aborted) {
           setRepos([]);
           setActivityDays([]);
+          setContributionTotal(undefined);
           setHasGithubError(true);
         }
       } finally {
@@ -509,27 +496,9 @@ export default function Projects() {
           initial={{ opacity: 0, y: 32 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.15 }}
-          className="mb-8 grid gap-6 lg:grid-cols-[minmax(0,0.78fr)_minmax(0,1.22fr)]"
+          className="mb-8"
         >
-          <div className="glass-card relative overflow-hidden rounded-sm p-5 sm:p-7">
-            <div className="absolute right-0 top-0 h-48 w-48 translate-x-1/3 -translate-y-1/3 rounded-full bg-sakura/10 blur-[80px]" />
-            <Sparkles className="mb-6 h-7 w-7 text-sakura" />
-            <h3 className="mb-4 font-cinzel text-2xl text-foreground sm:text-3xl">GitHub-linked showcase</h3>
-            <p className="font-inter leading-relaxed text-foreground-muted">
-              Public repositories are pulled directly from GitHub and arranged as a refined arsenal, so new work can surface here as your profile grows.
-            </p>
-            <a
-              href={`https://github.com/${GITHUB_USERNAME}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-8 inline-flex items-center gap-3 border border-sakura/30 bg-sakura/10 px-5 py-3 font-inter text-sm text-foreground transition-all duration-300 hover:border-sakura/50 hover:bg-sakura/20"
-            >
-              Open GitHub
-              <ArrowRight className="h-4 w-4" />
-            </a>
-          </div>
-
-          <ContributionGraph activity={activity} source={contributionSource} />
+          <ContributionGraph activity={activity} total={contributionTotal} source={contributionSource} />
         </motion.div>
 
         {hasGithubError && (

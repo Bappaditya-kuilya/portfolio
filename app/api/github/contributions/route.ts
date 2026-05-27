@@ -28,8 +28,14 @@ type GraphqlResponse = {
   errors?: Array<{ message: string }>;
 };
 
-const CONTRIBUTION_CELL_PATTERN =
-  /data-date="(\d{4}-\d{2}-\d{2})"[\s\S]*?<tool-tip[^>]*>([^<]+)<\/tool-tip>/g;
+type ContributionResult = {
+  days: ActivityDay[];
+  total: number;
+  source: "public" | "authenticated";
+};
+
+const CONTRIBUTION_CELL_PATTERN = /<[^>]*data-date="(\d{4}-\d{2}-\d{2})"[^>]*>/g;
+const CONTRIBUTION_TOTAL_PATTERN = /<h2[^>]*id="js-contribution-activity-description"[^>]*>\s*([\d,]+)\s+contributions?/i;
 
 const CONTRIBUTION_QUERY = `
   query Contributions($login: String!, $from: DateTime!, $to: DateTime!) {
@@ -69,6 +75,11 @@ function extractCount(label: string) {
   return match?.[1] ? Number.parseInt(match[1], 10) : 0;
 }
 
+function extractAttribute(markup: string, attribute: string) {
+  const pattern = new RegExp(`${attribute}="([^"]*)"`, "i");
+  return markup.match(pattern)?.[1] ?? null;
+}
+
 async function fetchPublicContributionCalendar(username: string, from: string, to: string) {
   const response = await fetch(`https://github.com/users/${username}/contributions?from=${from}&to=${to}`, {
     headers: {
@@ -83,19 +94,35 @@ async function fetchPublicContributionCalendar(username: string, from: string, t
 
   const markup = await response.text();
   const days: ActivityDay[] = [];
+  const totalMatch = markup.match(CONTRIBUTION_TOTAL_PATTERN);
+  const total = totalMatch?.[1] ? Number.parseInt(totalMatch[1].replaceAll(",", ""), 10) : 0;
   let match: RegExpExecArray | null;
 
   while ((match = CONTRIBUTION_CELL_PATTERN.exec(markup)) !== null) {
+    const tagMarkup = match[0];
+    const dataCount = extractAttribute(tagMarkup, "data-count");
+    const dataLevel = extractAttribute(tagMarkup, "data-level");
+    const ariaLabel = extractAttribute(tagMarkup, "aria-label");
+
     days.push({
       date: match[1],
-      count: extractCount(match[2]),
+      count: dataCount
+        ? Number.parseInt(dataCount, 10)
+        : dataLevel
+          ? Number.parseInt(dataLevel, 10)
+          : extractCount(ariaLabel ?? ""),
     });
+  }
+
+  if (days.length === 0) {
+    throw new Error("Unable to parse public contribution calendar");
   }
 
   return {
     days,
+    total,
     source: "public",
-  } as const;
+  } satisfies ContributionResult;
 }
 
 async function fetchAuthenticatedContributionCalendar(username: string, from: string, to: string, token: string) {
@@ -127,6 +154,7 @@ async function fetchAuthenticatedContributionCalendar(username: string, from: st
   }
 
   const weeks = payload.data?.user?.contributionsCollection?.contributionCalendar?.weeks ?? [];
+  const total = payload.data?.user?.contributionsCollection?.contributionCalendar?.totalContributions ?? 0;
   const days = weeks.flatMap((week) =>
     week.contributionDays.map((day) => ({
       date: day.date,
@@ -136,8 +164,13 @@ async function fetchAuthenticatedContributionCalendar(username: string, from: st
 
   return {
     days,
+    total,
     source: "authenticated",
-  } as const;
+  } satisfies ContributionResult;
+}
+
+function getContributionTotal(days: ActivityDay[]) {
+  return days.reduce((sum, day) => sum + day.count, 0);
 }
 
 export async function GET(request: NextRequest) {
@@ -151,9 +184,31 @@ export async function GET(request: NextRequest) {
   const token = process.env.GITHUB_TOKEN;
 
   try {
-    const result = token
-      ? await fetchAuthenticatedContributionCalendar(username, from, to, token)
-      : await fetchPublicContributionCalendar(username, from, to);
+    if (token) {
+      const [authenticatedResult, publicResult] = await Promise.allSettled([
+        fetchAuthenticatedContributionCalendar(username, from, to, token),
+        fetchPublicContributionCalendar(username, from, to),
+      ]);
+
+      if (authenticatedResult.status === "fulfilled" && publicResult.status === "fulfilled") {
+        const authenticatedTotal = getContributionTotal(authenticatedResult.value.days);
+        const publicTotal = getContributionTotal(publicResult.value.days);
+
+        return NextResponse.json(publicTotal > authenticatedTotal ? publicResult.value : authenticatedResult.value);
+      }
+
+      if (publicResult.status === "fulfilled") {
+        return NextResponse.json(publicResult.value);
+      }
+
+      if (authenticatedResult.status === "fulfilled") {
+        return NextResponse.json(authenticatedResult.value);
+      }
+
+      return NextResponse.json({ error: "Unable to load contributions" }, { status: 500 });
+    }
+
+    const result = await fetchPublicContributionCalendar(username, from, to);
 
     return NextResponse.json(result);
   } catch (error) {
