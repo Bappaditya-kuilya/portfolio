@@ -30,11 +30,17 @@ type GithubRepo = {
   topics?: string[];
   fork: boolean;
   archived: boolean;
+  has_pages?: boolean;
 };
 
 type ActivityDay = {
   date: string;
   count: number;
+};
+
+type ContributionResponse = {
+  days: ActivityDay[];
+  source?: "public" | "authenticated";
 };
 
 const languageColors: Record<string, string> = {
@@ -91,7 +97,34 @@ function buildActivityDays(activityDays: ActivityDay[]) {
   return days;
 }
 
-function ContributionGraph({ activity }: { activity: ActivityDay[] }) {
+function getRepoLiveUrl(repo: GithubRepo) {
+  const homepage = repo.homepage?.trim();
+
+  if (homepage) {
+    return homepage.startsWith("http") ? homepage : `https://${homepage}`;
+  }
+
+  if (repo.has_pages) {
+    const normalizedRepoName = repo.name.toLowerCase();
+    const normalizedUsername = GITHUB_USERNAME.toLowerCase();
+
+    if (normalizedRepoName === `${normalizedUsername}.github.io`) {
+      return `https://${normalizedUsername}.github.io`;
+    }
+
+    return `https://${normalizedUsername}.github.io/${repo.name}/`;
+  }
+
+  return null;
+}
+
+function ContributionGraph({
+  activity,
+  source,
+}: {
+  activity: ActivityDay[];
+  source: "public" | "authenticated";
+}) {
   const total = activity.reduce((sum, day) => sum + day.count, 0);
   const activeDays = activity.filter((day) => day.count > 0).length;
   const weeks = useMemo(() => {
@@ -128,7 +161,7 @@ function ContributionGraph({ activity }: { activity: ActivityDay[] }) {
   }, [weeks]);
 
   return (
-    <div className="glass-card rounded-sm p-5 lg:p-6">
+    <div className="glass-card min-w-0 rounded-sm p-4 sm:p-5 lg:p-6">
       <div className="mb-5 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div>
           <div className="mb-2 flex items-center gap-2">
@@ -137,17 +170,17 @@ function ContributionGraph({ activity }: { activity: ActivityDay[] }) {
               Live GitHub Pulse
             </span>
           </div>
-          <p className="font-cormorant text-2xl text-foreground">Contribution activity</p>
+          <p className="font-cormorant text-xl text-foreground sm:text-2xl">Contribution activity</p>
         </div>
-        <div className="grid grid-cols-2 gap-3 text-right">
+        <div className="grid grid-cols-2 gap-3 sm:text-right">
           <div>
-            <p className="font-cinzel text-2xl text-foreground">{total}</p>
+            <p className="font-cinzel text-xl text-foreground sm:text-2xl">{total}</p>
             <p className="font-inter text-[10px] uppercase tracking-[0.18em] text-foreground-muted">
               Events
             </p>
           </div>
           <div>
-            <p className="font-cinzel text-2xl text-foreground">{activeDays}</p>
+            <p className="font-cinzel text-xl text-foreground sm:text-2xl">{activeDays}</p>
             <p className="font-inter text-[10px] uppercase tracking-[0.18em] text-foreground-muted">
               Active Days
             </p>
@@ -155,7 +188,7 @@ function ContributionGraph({ activity }: { activity: ActivityDay[] }) {
         </div>
       </div>
 
-      <div className="overflow-x-auto pb-2">
+      <div className="min-w-0 overflow-x-auto pb-2">
         <div className="min-w-max">
           <div
             className="mb-3 grid gap-1 pl-6"
@@ -196,8 +229,15 @@ function ContributionGraph({ activity }: { activity: ActivityDay[] }) {
         </div>
       </div>
 
-      <div className="mt-4 flex items-center justify-between gap-4 text-foreground-muted">
-        <p className="font-inter text-xs">Full GitHub contribution calendar for the last 12 months</p>
+      <div className="mt-4 flex flex-col gap-3 text-foreground-muted sm:flex-row sm:items-center sm:justify-between">
+        <div className="space-y-1">
+          <p className="font-inter text-xs">Full GitHub contribution calendar for the last 12 months</p>
+          {source === "public" && (
+            <p className="font-inter text-[11px] text-foreground-muted">
+              Public GitHub view only. Private and owner-only contributions will not appear here.
+            </p>
+          )}
+        </div>
         <div className="flex items-center gap-1">
           <span className="font-inter text-[10px]">Less</span>
           {[0, 1, 3, 6, 9].map((count) => (
@@ -213,6 +253,7 @@ function ContributionGraph({ activity }: { activity: ActivityDay[] }) {
 function RepoCard({ repo, index }: { repo: GithubRepo; index: number }) {
   const languageColor = languageColors[repo.language ?? ""] ?? "#ff7eb6";
   const topics = repo.topics?.slice(0, 3) ?? [];
+  const liveUrl = getRepoLiveUrl(repo);
 
   return (
     <motion.article
@@ -237,9 +278,9 @@ function RepoCard({ repo, index }: { repo: GithubRepo; index: number }) {
           >
             <Github className="h-4 w-4" />
           </a>
-          {repo.homepage && (
+          {liveUrl ? (
             <a
-              href={repo.homepage}
+              href={liveUrl}
               target="_blank"
               rel="noopener noreferrer"
               aria-label={`${repo.name} live project`}
@@ -247,6 +288,14 @@ function RepoCard({ repo, index }: { repo: GithubRepo; index: number }) {
             >
               <ExternalLink className="h-4 w-4" />
             </a>
+          ) : (
+            <span
+              aria-label={`${repo.name} live project unavailable`}
+              title="Live demo not published yet"
+              className="rounded-sm border border-foreground/10 p-2 text-foreground-muted/40"
+            >
+              <ExternalLink className="h-4 w-4" />
+            </span>
           )}
         </div>
       </div>
@@ -263,6 +312,15 @@ function RepoCard({ repo, index }: { repo: GithubRepo; index: number }) {
           <span className="inline-flex items-center gap-2 rounded-sm border border-foreground/10 bg-background-secondary/70 px-3 py-1 text-xs font-inter text-foreground-dim">
             <span className="h-2 w-2 rounded-full" style={{ backgroundColor: languageColor }} />
             {repo.language}
+          </span>
+        )}
+        {liveUrl ? (
+          <span className="rounded-sm border border-emerald-400/20 bg-emerald-400/10 px-3 py-1 text-xs font-inter text-emerald-200">
+            Live demo available
+          </span>
+        ) : (
+          <span className="rounded-sm border border-foreground/10 bg-white/[0.03] px-3 py-1 text-xs font-inter text-foreground-muted">
+            No live demo yet
           </span>
         )}
         {topics.map((topic) => (
@@ -327,13 +385,18 @@ export default function Projects() {
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
   const [repos, setRepos] = useState<GithubRepo[]>([]);
   const [activityDays, setActivityDays] = useState<ActivityDay[]>([]);
+  const [contributionSource, setContributionSource] = useState<"public" | "authenticated">("public");
   const [isLoading, setIsLoading] = useState(true);
   const [hasGithubError, setHasGithubError] = useState(false);
 
   useEffect(() => {
     const controller = new AbortController();
 
-    async function loadGithubArsenal() {
+    async function loadGithubArsenal(showLoader: boolean) {
+      if (showLoader) {
+        setIsLoading(true);
+      }
+
       try {
         const repoResponse = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=pushed&per_page=100`, {
           signal: controller.signal,
@@ -363,8 +426,9 @@ export default function Projects() {
           throw new Error("GitHub contribution request failed");
         }
 
-        const contributionData = (await contributionResponse.json()) as { days: ActivityDay[] };
+        const contributionData = (await contributionResponse.json()) as ContributionResponse;
         setActivityDays(contributionData.days);
+        setContributionSource(contributionData.source === "authenticated" ? "authenticated" : "public");
         setHasGithubError(false);
       } catch (error) {
         if (!controller.signal.aborted) {
@@ -373,15 +437,24 @@ export default function Projects() {
           setHasGithubError(true);
         }
       } finally {
-        if (!controller.signal.aborted) {
+        if (!controller.signal.aborted && showLoader) {
           setIsLoading(false);
         }
       }
     }
 
-    loadGithubArsenal();
+    loadGithubArsenal(true);
 
-    return () => controller.abort();
+    const refreshInterval = window.setInterval(() => {
+      if (!controller.signal.aborted) {
+        loadGithubArsenal(false);
+      }
+    }, 5 * 60 * 1000);
+
+    return () => {
+      controller.abort();
+      window.clearInterval(refreshInterval);
+    };
   }, []);
 
   const activity = useMemo(() => buildActivityDays(activityDays), [activityDays]);
@@ -399,7 +472,7 @@ export default function Projects() {
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
-          className="mb-16 grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-end"
+          className="mb-12 grid gap-8 lg:mb-16 lg:grid-cols-[1.1fr_0.9fr] lg:items-end lg:gap-10"
         >
           <div>
             <div className="mb-6 flex items-center gap-4">
@@ -408,14 +481,14 @@ export default function Projects() {
                 Project Arsenal
               </span>
             </div>
-            <h2 className="max-w-3xl font-cormorant text-4xl leading-tight text-foreground md:text-5xl lg:text-6xl">
+            <h2 className="max-w-3xl font-cormorant text-4xl leading-tight text-foreground sm:text-5xl lg:text-6xl">
               A living gallery of
               <br />
               <span className="text-gradient-sakura">disciplined engineering.</span>
             </h2>
           </div>
 
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
             {[
               { label: "Repos", value: isLoading ? "..." : repoCount.toString(), icon: Layers3 },
               { label: "Languages", value: isLoading ? "..." : languageCount.toString(), icon: Code2 },
@@ -436,12 +509,12 @@ export default function Projects() {
           initial={{ opacity: 0, y: 32 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.15 }}
-          className="mb-8 grid gap-6 lg:grid-cols-[0.78fr_1.22fr]"
+          className="mb-8 grid gap-6 lg:grid-cols-[minmax(0,0.78fr)_minmax(0,1.22fr)]"
         >
-          <div className="glass-card relative overflow-hidden rounded-sm p-7">
+          <div className="glass-card relative overflow-hidden rounded-sm p-5 sm:p-7">
             <div className="absolute right-0 top-0 h-48 w-48 translate-x-1/3 -translate-y-1/3 rounded-full bg-sakura/10 blur-[80px]" />
             <Sparkles className="mb-6 h-7 w-7 text-sakura" />
-            <h3 className="mb-4 font-cinzel text-3xl text-foreground">GitHub-linked showcase</h3>
+            <h3 className="mb-4 font-cinzel text-2xl text-foreground sm:text-3xl">GitHub-linked showcase</h3>
             <p className="font-inter leading-relaxed text-foreground-muted">
               Public repositories are pulled directly from GitHub and arranged as a refined arsenal, so new work can surface here as your profile grows.
             </p>
@@ -456,7 +529,7 @@ export default function Projects() {
             </a>
           </div>
 
-          <ContributionGraph activity={activity} />
+          <ContributionGraph activity={activity} source={contributionSource} />
         </motion.div>
 
         {hasGithubError && (
