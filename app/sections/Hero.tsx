@@ -1,27 +1,54 @@
 "use client";
 
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { useState } from "react";
 import { Github, Linkedin, Mail, ArrowRight, Flower2, Camera } from "lucide-react";
+import Magnetic from "../components/Magnetic";
 
 export default function Hero() {
   const githubUrl = "https://github.com/Bappaditya-kuilya";
   const [profileImageMissing, setProfileImageMissing] = useState(false);
 
+  // Pointer parallax: normalized -0.5..0.5 across the viewport.
+  const pointerX = useMotionValue(0);
+  const pointerY = useMotionValue(0);
+  const smoothX = useSpring(pointerX, { stiffness: 80, damping: 20 });
+  const smoothY = useSpring(pointerY, { stiffness: 80, damping: 20 });
+
+  const portraitX = useTransform(smoothX, [-0.5, 0.5], [18, -18]);
+  const portraitY = useTransform(smoothY, [-0.5, 0.5], [18, -18]);
+  const bgX = useTransform(smoothX, [-0.5, 0.5], [-24, 24]);
+  const bgY = useTransform(smoothY, [-0.5, 0.5], [-24, 24]);
+
+  const handleParallax = (event: React.MouseEvent<HTMLElement>) => {
+    if (typeof window !== "undefined") {
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+    }
+    pointerX.set(event.clientX / window.innerWidth - 0.5);
+    pointerY.set(event.clientY / window.innerHeight - 0.5);
+  };
+
   return (
     <section
       id="hero"
+      onMouseMove={handleParallax}
       className="relative min-h-screen flex items-center overflow-hidden"
     >
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
-        <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40"
-          style={{
-            backgroundImage: "url('/images/cinematic-sakura-noble.png')",
-          }}
-        />
+        <motion.div
+          style={{ x: bgX, y: bgY }}
+          className="absolute -inset-8 bg-cover bg-center bg-no-repeat opacity-40"
+        >
+          <div
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style={{
+              backgroundImage: "url('/images/cinematic-sakura-noble.webp')",
+            }}
+          />
+        </motion.div>
         <div className="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/50" />
       </div>
@@ -103,33 +130,37 @@ export default function Hero() {
               transition={{ duration: 1, delay: 1 }}
               className="flex flex-wrap gap-4"
             >
-              <motion.a
-                href="#resume"
-                onClick={(e) => {
-                  e.preventDefault();
-                  document.querySelector("#resume")?.scrollIntoView({ behavior: "smooth" });
-                }}
-                className="group flex items-center gap-3 px-8 py-4 bg-sakura/20 border border-sakura/40 rounded-sm text-foreground font-inter text-sm tracking-wider hover:bg-sakura/30 transition-all duration-500"
-                whileHover={{ scale: 1.02, boxShadow: "0 0 30px rgba(255,126,182,0.2)" }}
-                whileTap={{ scale: 0.98 }}
-              >
-                VIEW RESUME
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </motion.a>
+              <Magnetic>
+                <motion.a
+                  href="#resume"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    document.querySelector("#resume")?.scrollIntoView({ behavior: "smooth" });
+                  }}
+                  className="group flex items-center gap-3 px-8 py-4 bg-sakura/20 border border-sakura/40 rounded-sm text-foreground font-inter text-sm tracking-wider hover:bg-sakura/30 transition-all duration-500"
+                  whileHover={{ scale: 1.02, boxShadow: "0 0 30px rgba(255,126,182,0.2)" }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  VIEW RESUME
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </motion.a>
+              </Magnetic>
 
-              <motion.a
-                href="#projects"
-                onClick={(e) => {
-                  e.preventDefault();
-                  document.querySelector("#projects")?.scrollIntoView({ behavior: "smooth" });
-                }}
-                className="group flex items-center gap-3 px-8 py-4 border border-foreground/20 rounded-sm text-foreground-muted font-inter text-sm tracking-wider hover:border-foreground/40 hover:text-foreground transition-all duration-500"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                EXPLORE PROJECTS
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </motion.a>
+              <Magnetic>
+                <motion.a
+                  href="#projects"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    document.querySelector("#projects")?.scrollIntoView({ behavior: "smooth" });
+                  }}
+                  className="group flex items-center gap-3 px-8 py-4 border border-foreground/20 rounded-sm text-foreground-muted font-inter text-sm tracking-wider hover:border-foreground/40 hover:text-foreground transition-all duration-500"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  EXPLORE PROJECTS
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </motion.a>
+              </Magnetic>
             </motion.div>
 
             {/* Social Icons */}
@@ -178,7 +209,10 @@ export default function Hero() {
             <div className="absolute bottom-20 left-10 hidden w-24 h-24 border border-sakura/10 rounded-full animate-float-gentle sm:block" style={{ animationDelay: "2s" }} />
 
             {/* Central Profile Frame */}
-            <div className="relative h-[26rem] w-72 sm:h-[28rem] sm:w-80">
+            <motion.div
+              style={{ x: portraitX, y: portraitY }}
+              className="relative h-[26rem] w-72 sm:h-[28rem] sm:w-80"
+            >
               <div className="absolute inset-0 rounded-sm border border-sakura/20 bg-gradient-to-b from-white/[0.04] via-background-tertiary/50 to-background/90 shadow-[0_30px_100px_rgba(255,126,182,0.12)]" />
               <div className="absolute inset-4 rounded-sm border border-sakura/10" />
               <div className="absolute -inset-px rounded-sm bg-[linear-gradient(115deg,transparent,rgba(255,255,255,0.2),transparent)] opacity-20" />
@@ -215,27 +249,11 @@ export default function Hero() {
               <div className="absolute top-0 right-0 w-4 h-4 border-t border-r border-sakura/30" />
               <div className="absolute bottom-0 left-0 w-4 h-4 border-b border-l border-sakura/30" />
               <div className="absolute bottom-0 right-0 w-4 h-4 border-b border-r border-sakura/30" />
-            </div>
+            </motion.div>
           </motion.div>
         </div>
       </div>
 
-      {/* Scroll Indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 2 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2"
-      >
-        <span className="font-inter text-[10px] text-foreground-muted tracking-[0.3em] uppercase">
-          Scroll
-        </span>
-        <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-          className="w-px h-8 bg-sakura/30"
-        />
-      </motion.div>
     </section>
   );
 }

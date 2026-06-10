@@ -14,32 +14,51 @@ interface Petal {
   swayAmplitude: number;
   swayFrequency: number;
   swayOffset: number;
+  vx: number;
+  vy: number;
 }
+
+const POINTER_RADIUS = 130;
+const POINTER_FORCE = 0.9;
 
 export default function SakuraParticles() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const petalsRef = useRef<Petal[]>([]);
   const animationRef = useRef<number>(0);
+  const pointerRef = useRef({ x: -9999, y: -9999, active: false });
 
   useEffect(() => {
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduceMotion) return;
+
     const canvas = canvasRef.current;
     if (!canvas) return;
 
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
+    let width = 0;
+    let height = 0;
+
     const resize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = Math.floor(width * dpr);
+      canvas.height = Math.floor(height * dpr);
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
     resize();
     window.addEventListener("resize", resize);
 
-    // Initialize petals
-    const petalCount = 40;
+    // Fewer petals on small / touch screens to protect battery and frame rate.
+    const isCompact = window.innerWidth < 768;
+    const petalCount = isCompact ? 18 : 40;
     petalsRef.current = Array.from({ length: petalCount }, () => ({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height - canvas.height,
+      x: Math.random() * width,
+      y: Math.random() * height - height,
       size: Math.random() * 4 + 2,
       speedY: Math.random() * 0.5 + 0.2,
       speedX: Math.random() * 0.3 - 0.15,
@@ -49,7 +68,18 @@ export default function SakuraParticles() {
       swayAmplitude: Math.random() * 20 + 10,
       swayFrequency: Math.random() * 0.002 + 0.001,
       swayOffset: Math.random() * Math.PI * 2,
+      vx: 0,
+      vy: 0,
     }));
+
+    const onPointerMove = (event: PointerEvent) => {
+      pointerRef.current = { x: event.clientX, y: event.clientY, active: true };
+    };
+    const onPointerLeave = () => {
+      pointerRef.current.active = false;
+    };
+    window.addEventListener("pointermove", onPointerMove, { passive: true });
+    window.addEventListener("pointerleave", onPointerLeave);
 
     const drawPetal = (petal: Petal) => {
       ctx.save();
@@ -57,7 +87,6 @@ export default function SakuraParticles() {
       ctx.rotate(petal.rotation);
       ctx.globalAlpha = petal.opacity;
 
-      // Draw petal shape
       ctx.beginPath();
       ctx.moveTo(0, -petal.size);
       ctx.bezierCurveTo(petal.size * 0.5, -petal.size * 0.5, petal.size, 0, 0, petal.size);
@@ -75,21 +104,40 @@ export default function SakuraParticles() {
     };
 
     const animate = (time: number) => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.clearRect(0, 0, width, height);
+      const pointer = pointerRef.current;
 
       petalsRef.current.forEach((petal) => {
-        // Update position
-        petal.y += petal.speedY;
-        petal.x += petal.speedX + Math.sin(time * petal.swayFrequency + petal.swayOffset) * 0.3;
-        petal.rotation += petal.rotationSpeed;
-
-        // Reset if out of bounds
-        if (petal.y > canvas.height + 20) {
-          petal.y = -20;
-          petal.x = Math.random() * canvas.width;
+        // Pointer repulsion: petals drift away from the cursor like a breeze.
+        if (pointer.active) {
+          const dx = petal.x - pointer.x;
+          const dy = petal.y - pointer.y;
+          const distSq = dx * dx + dy * dy;
+          if (distSq < POINTER_RADIUS * POINTER_RADIUS && distSq > 0.01) {
+            const dist = Math.sqrt(distSq);
+            const strength = (1 - dist / POINTER_RADIUS) * POINTER_FORCE;
+            petal.vx += (dx / dist) * strength;
+            petal.vy += (dy / dist) * strength;
+          }
         }
-        if (petal.x > canvas.width + 20) petal.x = -20;
-        if (petal.x < -20) petal.x = canvas.width + 20;
+
+        // Ease the kicked velocity back toward rest.
+        petal.vx *= 0.92;
+        petal.vy *= 0.92;
+
+        petal.y += petal.speedY + petal.vy;
+        petal.x +=
+          petal.speedX + petal.vx + Math.sin(time * petal.swayFrequency + petal.swayOffset) * 0.3;
+        petal.rotation += petal.rotationSpeed + petal.vx * 0.01;
+
+        if (petal.y > height + 20) {
+          petal.y = -20;
+          petal.x = Math.random() * width;
+          petal.vx = 0;
+          petal.vy = 0;
+        }
+        if (petal.x > width + 20) petal.x = -20;
+        if (petal.x < -20) petal.x = width + 20;
 
         drawPetal(petal);
       });
@@ -97,10 +145,26 @@ export default function SakuraParticles() {
       animationRef.current = requestAnimationFrame(animate);
     };
 
-    animationRef.current = requestAnimationFrame(animate);
+    const start = () => {
+      cancelAnimationFrame(animationRef.current);
+      animationRef.current = requestAnimationFrame(animate);
+    };
+    // Pause the loop when the tab is hidden; resume on return.
+    const onVisibility = () => {
+      if (document.hidden) {
+        cancelAnimationFrame(animationRef.current);
+      } else {
+        start();
+      }
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+    start();
 
     return () => {
       window.removeEventListener("resize", resize);
+      window.removeEventListener("pointermove", onPointerMove);
+      window.removeEventListener("pointerleave", onPointerLeave);
+      document.removeEventListener("visibilitychange", onVisibility);
       cancelAnimationFrame(animationRef.current);
     };
   }, []);
@@ -108,6 +172,7 @@ export default function SakuraParticles() {
   return (
     <canvas
       ref={canvasRef}
+      aria-hidden="true"
       className="fixed inset-0 pointer-events-none z-30"
       style={{ mixBlendMode: "screen" }}
     />

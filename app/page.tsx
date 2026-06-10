@@ -1,6 +1,7 @@
 "use client";
 
 import SakuraParticles from "./components/SakuraParticles";
+import CustomCursor from "./components/CustomCursor";
 import Navigation from "./components/Navigation";
 import Footer from "./components/Footer";
 import Hero from "./sections/Hero";
@@ -14,6 +15,9 @@ import Contact from "./sections/Contact";
 export default function Home() {
   return (
     <main className="relative min-h-screen bg-background">
+      {/* Premium pointer */}
+      <CustomCursor />
+
       {/* Atmospheric Effects */}
       <SakuraParticles />
 

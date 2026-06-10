@@ -36,7 +36,7 @@ const categories = ["All", "Language", "Frontend", "Backend", "AI/ML", "DevOps",
 const stats = [
   { value: "8.11", label: "CGPA", detail: "academic precision", icon: Trophy },
   { value: "Winner", label: "Hackathon", detail: "rapid execution", icon: Sparkles },
-  { value: "60+", label: "LeetCode", detail: "problem solving", icon: Code2 },
+  { value: "160+", label: "LeetCode", detail: "problem solving", icon: Code2 },
   { value: "AI", label: "Systems Builder", detail: "automation focus", icon: BrainCircuit },
 ];
 
