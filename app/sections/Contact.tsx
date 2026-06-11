@@ -2,9 +2,10 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
-import { Mail, MapPin, Send, Github, Linkedin, Flower2 } from "lucide-react";
+import { Mail, MapPin, Send, Github, Linkedin } from "lucide-react";
 
 const initialFormState = { name: "", email: "", message: "" };
+const CONTACT_EMAIL = "bappadityakuilya@gmail.com";
 const formspreeEndpoint = process.env.NEXT_PUBLIC_FORMSPREE_ENDPOINT;
 
 export default function Contact() {
@@ -16,12 +17,17 @@ export default function Contact() {
   const [statusMessage, setStatusMessage] = useState("");
   const githubUrl = "https://github.com/Bappaditya-kuilya";
 
+  // Submits in-page via Formspree (fetch) so the visitor never leaves the site.
+  // Falls back to a mailto link only if the endpoint isn't configured.
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!formspreeEndpoint) {
-      setSubmissionStatus("error");
-      setStatusMessage("Contact form is not configured yet.");
+      const subject = `Portfolio contact from ${formState.name || "a visitor"}`;
+      const body = `Name: ${formState.name}\nEmail: ${formState.email}\n\n${formState.message}`;
+      window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(
+        subject
+      )}&body=${encodeURIComponent(body)}`;
       return;
     }
 
@@ -32,10 +38,7 @@ export default function Contact() {
     try {
       const response = await fetch(formspreeEndpoint, {
         method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
+        headers: { Accept: "application/json", "Content-Type": "application/json" },
         body: JSON.stringify({
           name: formState.name,
           email: formState.email,
@@ -55,7 +58,7 @@ export default function Contact() {
 
       setFormState(initialFormState);
       setSubmissionStatus("success");
-      setStatusMessage("Message sent. I will get back to you soon.");
+      setStatusMessage("Message sent. I'll get back to you soon.");
     } catch (error) {
       setSubmissionStatus("error");
       setStatusMessage(

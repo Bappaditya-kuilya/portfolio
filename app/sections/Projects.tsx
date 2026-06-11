@@ -12,6 +12,7 @@ import {
   Layers3,
   Star,
 } from "lucide-react";
+import FeaturedProjects from "./FeaturedProjects";
 
 const GITHUB_USERNAME = "Bappaditya-kuilya";
 
@@ -383,25 +384,16 @@ export default function Projects() {
       }
 
       try {
-        const repoResponse = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=pushed&per_page=100`, {
+        const repoResponse = await fetch(`/api/github/repos?username=${GITHUB_USERNAME}`, {
           signal: controller.signal,
-          headers: { Accept: "application/vnd.github+json" },
         });
 
         if (!repoResponse.ok) {
           throw new Error("GitHub API request failed");
         }
 
-        const repoData = (await repoResponse.json()) as GithubRepo[];
-        const polishedRepos = repoData
-          .filter((repo) => !repo.fork && !repo.archived)
-          .sort((a, b) => {
-            const scoreA = a.stargazers_count * 3 + a.forks_count * 2 + new Date(a.pushed_at).getTime() / 1000000000000;
-            const scoreB = b.stargazers_count * 3 + b.forks_count * 2 + new Date(b.pushed_at).getTime() / 1000000000000;
-            return scoreB - scoreA;
-          });
-
-        setRepos(polishedRepos);
+        const repoPayload = (await repoResponse.json()) as { repos: GithubRepo[] };
+        setRepos(repoPayload.repos ?? []);
 
         const contributionResponse = await fetch(`/api/github/contributions?username=${GITHUB_USERNAME}`, {
           signal: controller.signal,
@@ -491,6 +483,8 @@ export default function Projects() {
             ))}
           </div>
         </motion.div>
+
+        <FeaturedProjects />
 
         <motion.div
           initial={{ opacity: 0, y: 32 }}

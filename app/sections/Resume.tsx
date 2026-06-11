@@ -39,7 +39,7 @@ const resumeHighlights = [
     title: "Achievements",
     items: [
       "Hackathon Winner",
-      "60+ LeetCode Problems",
+      "160+ LeetCode Problems",
       "Open Source Contributor",
     ],
   },
