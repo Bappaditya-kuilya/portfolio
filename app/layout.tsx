@@ -4,7 +4,7 @@ import Script from "next/script";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://bappadityakuilya.qzz.io";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://bappadityakuilya.is-a.dev";
 
 const PERSON_NAME = "Bappaditya Kuilya";
 const GITHUB_URL = "https://github.com/Bappaditya-kuilya";

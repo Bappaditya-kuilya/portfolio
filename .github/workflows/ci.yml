@@ -26,4 +26,4 @@ jobs:
       - name: Build
         run: npm run build
         env:
-          NEXT_PUBLIC_SITE_URL: https://bappadityakuilya.qzz.io
+          NEXT_PUBLIC_SITE_URL: https://bappadityakuilya.is-a.dev
