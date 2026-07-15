@@ -1,8 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m, useInView } from "framer-motion";
 import { MapPin, GraduationCap, Target, Activity, Heart, Languages } from "lucide-react";
-import { useInView } from "framer-motion";
 import { useRef } from "react";
 
 const infoCards = [
@@ -50,7 +49,7 @@ function InfoCard({ card, index }: { card: typeof infoCards[0]; index: number })
   const isInView = useInView(ref, { once: true, margin: "-50px" });
 
   return (
-    <motion.div
+    <m.div
       ref={ref}
       initial={{ opacity: 0, y: 30 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -74,7 +73,7 @@ function InfoCard({ card, index }: { card: typeof infoCards[0]; index: number })
           </p>
         </div>
       </div>
-    </motion.div>
+    </m.div>
   );
 }
 
@@ -93,7 +92,7 @@ export default function About() {
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         {/* Section Header */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
@@ -110,11 +109,11 @@ export default function About() {
             <br />
             <span className="text-gradient-sakura">Systems That Matter.</span>
           </h2>
-        </motion.div>
+        </m.div>
 
         <div className="grid lg:grid-cols-5 gap-12">
           {/* Bio */}
-          <motion.div
+          <m.div
             initial={{ opacity: 0, x: -30 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.2 }}
@@ -147,7 +146,7 @@ export default function About() {
                 &ldquo;Discipline, Grace, Precision. That is the way I build.&rdquo;
               </p>
             </div>
-          </motion.div>
+          </m.div>
 
           {/* Info Cards Grid */}
           <div className="lg:col-span-3 grid sm:grid-cols-2 gap-4">

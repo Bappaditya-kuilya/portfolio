@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { m, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { useState } from "react";
 import { Github, Linkedin, Mail, ArrowRight, Flower2, Camera } from "lucide-react";
 import Magnetic from "../components/Magnetic";
@@ -38,7 +38,7 @@ export default function Hero() {
     >
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
-        <motion.div
+        <m.div
           style={{ x: bgX, y: bgY }}
           className="absolute -inset-8 bg-cover bg-center bg-no-repeat opacity-40"
         >
@@ -48,7 +48,7 @@ export default function Hero() {
               backgroundImage: "url('/images/cinematic-sakura-noble.webp')",
             }}
           />
-        </motion.div>
+        </m.div>
         <div className="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/50" />
       </div>
@@ -71,7 +71,7 @@ export default function Hero() {
           {/* Left Content */}
           <div className="space-y-8">
             {/* Japanese Text */}
-            <motion.div
+            <m.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 1, delay: 0.2 }}
@@ -81,10 +81,10 @@ export default function Hero() {
                 心は静かに、技は美しく
               </span>
               <div className="h-px flex-1 bg-sakura/20" />
-            </motion.div>
+            </m.div>
 
             {/* Main Heading */}
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 0.4 }}
@@ -99,20 +99,20 @@ export default function Hero() {
               <h1 className="font-cinzel text-5xl md:text-7xl lg:text-8xl text-gradient-sakura leading-[0.9] tracking-tight">
                 Line.
               </h1>
-            </motion.div>
+            </m.div>
 
             {/* Subheading */}
-            <motion.p
+            <m.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 0.6 }}
               className="font-cormorant text-xl md:text-2xl text-foreground-dim italic max-w-lg leading-relaxed"
             >
               AI Systems Engineer crafting intelligent solutions with precision, purpose, and a touch of soul.
-            </motion.p>
+            </m.p>
 
             {/* Divider */}
-            <motion.div
+            <m.div
               initial={{ opacity: 0, scaleX: 0 }}
               animate={{ opacity: 1, scaleX: 1 }}
               transition={{ duration: 1, delay: 0.8 }}
@@ -121,17 +121,17 @@ export default function Hero() {
               <div className="h-px flex-1 bg-sakura/30" />
               <Flower2 className="w-4 h-4 text-sakura/50" />
               <div className="h-px flex-1 bg-sakura/30" />
-            </motion.div>
+            </m.div>
 
             {/* CTA Buttons */}
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 1 }}
               className="flex flex-wrap gap-4"
             >
               <Magnetic>
-                <motion.a
+                <m.a
                   href="#resume"
                   onClick={(e) => {
                     e.preventDefault();
@@ -143,11 +143,11 @@ export default function Hero() {
                 >
                   VIEW RESUME
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </motion.a>
+                </m.a>
               </Magnetic>
 
               <Magnetic>
-                <motion.a
+                <m.a
                   href="#projects"
                   onClick={(e) => {
                     e.preventDefault();
@@ -159,12 +159,12 @@ export default function Hero() {
                 >
                   EXPLORE PROJECTS
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </motion.a>
+                </m.a>
               </Magnetic>
-            </motion.div>
+            </m.div>
 
             {/* Social Icons */}
-            <motion.div
+            <m.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 1, delay: 1.2 }}
@@ -175,7 +175,7 @@ export default function Hero() {
                 { icon: Linkedin, href: "https://linkedin.com/in/bappaditya-kuilya", label: "LinkedIn" },
                 { icon: Mail, href: "mailto:bappadityakuilya@gmail.com", label: "Email" },
               ].map((social) => (
-                <motion.a
+                <m.a
                   key={social.label}
                   href={social.href}
                   target="_blank"
@@ -185,13 +185,13 @@ export default function Hero() {
                   whileTap={{ scale: 0.95 }}
                 >
                   <social.icon className="w-5 h-5" />
-                </motion.a>
+                </m.a>
               ))}
-            </motion.div>
+            </m.div>
           </div>
 
           {/* Right Content - Portrait Area */}
-          <motion.div
+          <m.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1.5, delay: 0.5 }}
@@ -209,7 +209,7 @@ export default function Hero() {
             <div className="absolute bottom-20 left-10 hidden w-24 h-24 border border-sakura/10 rounded-full animate-float-gentle sm:block" style={{ animationDelay: "2s" }} />
 
             {/* Central Profile Frame */}
-            <motion.div
+            <m.div
               style={{ x: portraitX, y: portraitY }}
               className="relative h-[26rem] w-72 sm:h-[28rem] sm:w-80"
             >
@@ -249,8 +249,8 @@ export default function Hero() {
               <div className="absolute top-0 right-0 w-4 h-4 border-t border-r border-sakura/30" />
               <div className="absolute bottom-0 left-0 w-4 h-4 border-b border-l border-sakura/30" />
               <div className="absolute bottom-0 right-0 w-4 h-4 border-b border-r border-sakura/30" />
-            </motion.div>
-          </motion.div>
+            </m.div>
+          </m.div>
         </div>
       </div>
 

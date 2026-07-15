@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
+import { m, useInView } from "framer-motion";
 import { useMemo, useRef, useState } from "react";
 import {
   BrainCircuit,
@@ -53,7 +53,7 @@ function SkillCard({ skill, index }: { skill: typeof skills[0]; index: number })
   const offset = circumference - (skill.level / 100) * circumference;
 
   return (
-    <motion.div
+    <m.div
       ref={ref}
       layout
       initial={{ opacity: 0, y: 28, rotateX: 10 }}
@@ -81,7 +81,7 @@ function SkillCard({ skill, index }: { skill: typeof skills[0]; index: number })
           <div className="relative h-20 w-20 shrink-0">
             <svg viewBox="0 0 80 80" className="h-20 w-20 -rotate-90">
               <circle cx="40" cy="40" r="34" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="4" />
-              <motion.circle
+              <m.circle
                 cx="40"
                 cy="40"
                 r="34"
@@ -116,7 +116,7 @@ function SkillCard({ skill, index }: { skill: typeof skills[0]; index: number })
             </span>
           </div>
           <div className="h-1.5 overflow-hidden rounded-full bg-black/40">
-            <motion.div
+            <m.div
               initial={{ width: 0 }}
               animate={isInView ? { width: `${skill.level}%` } : {}}
               transition={{ duration: 1.2, delay: index * 0.05 + 0.35, ease: "easeOut" }}
@@ -129,13 +129,13 @@ function SkillCard({ skill, index }: { skill: typeof skills[0]; index: number })
           </div>
         </div>
       </div>
-    </motion.div>
+    </m.div>
   );
 }
 
 function StatCard({ stat, index }: { stat: typeof stats[0]; index: number }) {
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, y: 24 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: 0.45 + index * 0.08 }}
@@ -151,7 +151,7 @@ function StatCard({ stat, index }: { stat: typeof stats[0]; index: number }) {
       <p className="mt-2 font-inter text-[10px] uppercase tracking-[0.22em] text-foreground-muted/70">
         {stat.detail}
       </p>
-    </motion.div>
+    </m.div>
   );
 }
 
@@ -172,7 +172,7 @@ export default function Skills() {
       <div className="absolute right-0 top-0 h-[36rem] w-[36rem] bg-violet-glow/5 blur-[120px] pointer-events-none" />
 
       <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
@@ -222,15 +222,15 @@ export default function Skills() {
               ))}
             </div>
           </div>
-        </motion.div>
+        </m.div>
 
-        <motion.div layout className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <m.div layout className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {filteredSkills.map((skill, index) => (
             <SkillCard key={skill.name} skill={skill} index={index} />
           ))}
-        </motion.div>
+        </m.div>
 
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.5 }}
@@ -239,7 +239,7 @@ export default function Skills() {
           {stats.map((stat, index) => (
             <StatCard key={stat.label} stat={stat} index={index} />
           ))}
-        </motion.div>
+        </m.div>
       </div>
     </section>
   );

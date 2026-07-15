@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 import { Menu, X, Flower2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -52,7 +52,7 @@ export default function Navigation() {
 
   return (
     <>
-      <motion.nav
+      <m.nav
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
@@ -66,7 +66,7 @@ export default function Navigation() {
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
-            <motion.a
+            <m.a
               href="#hero"
               onClick={(e) => {
                 e.preventDefault();
@@ -81,12 +81,12 @@ export default function Navigation() {
                   Bappaditya Kuilya
                 </span>
               </div>
-            </motion.a>
+            </m.a>
 
             {/* Desktop Navigation */}
             <div className="hidden lg:flex items-center gap-1">
               {navItems.map((item) => (
-                <motion.a
+                <m.a
                   key={item.href}
                   href={item.href}
                   onClick={(e) => {
@@ -104,18 +104,18 @@ export default function Navigation() {
                 >
                   {item.label}
                   {activeSection === item.href.replace("#", "") && (
-                    <motion.div
+                    <m.div
                       layoutId="activeNav"
                       className="absolute bottom-0 left-4 right-4 h-px bg-sakura"
                       transition={{ type: "spring", stiffness: 380, damping: 30 }}
                     />
                   )}
-                </motion.a>
+                </m.a>
               ))}
             </div>
 
             {/* CTA Button */}
-            <motion.a
+            <m.a
               href="#resume"
               onClick={(e) => {
                 e.preventDefault();
@@ -139,7 +139,7 @@ export default function Navigation() {
                   d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
                 />
               </svg>
-            </motion.a>
+            </m.a>
 
             {/* Mobile Menu Button */}
             <button
@@ -150,12 +150,12 @@ export default function Navigation() {
             </button>
           </div>
         </div>
-      </motion.nav>
+      </m.nav>
 
       {/* Mobile Menu */}
       <AnimatePresence>
         {isMobileMenuOpen && (
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
@@ -165,7 +165,7 @@ export default function Navigation() {
             <div className="absolute inset-0 bg-background/95 backdrop-blur-xl" />
             <div className="relative flex flex-col items-center justify-center h-full gap-8">
               {navItems.map((item, index) => (
-                <motion.a
+                <m.a
                   key={item.href}
                   href={item.href}
                   onClick={(e) => {
@@ -178,10 +178,10 @@ export default function Navigation() {
                   className="text-2xl font-cinzel text-foreground hover:text-sakura transition-colors"
                 >
                   {item.label}
-                </motion.a>
+                </m.a>
               ))}
             </div>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
     </>

@@ -29,10 +29,10 @@ const config: Config = {
         },
       },
       fontFamily: {
-        cinzel: ["Cinzel", "serif"],
-        cormorant: ["Cormorant Garamond", "serif"],
-        inter: ["Inter", "sans-serif"],
-        jetbrains: ["JetBrains Mono", "monospace"],
+        cinzel: ["var(--font-cinzel)", "serif"],
+        cormorant: ["var(--font-cormorant)", "serif"],
+        inter: ["var(--font-inter)", "sans-serif"],
+        jetbrains: ["var(--font-jetbrains)", "monospace"],
         noto: ["Noto Serif JP", "serif"],
       },
       animation: {

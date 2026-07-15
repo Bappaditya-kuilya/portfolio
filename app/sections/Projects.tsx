@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
+import { m, useInView } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   Calendar,
@@ -12,7 +12,6 @@ import {
   Layers3,
   Star,
 } from "lucide-react";
-import FeaturedProjects from "./FeaturedProjects";
 
 const GITHUB_USERNAME = "Bappaditya-kuilya";
 
@@ -258,7 +257,7 @@ function RepoCard({ repo, index }: { repo: GithubRepo; index: number }) {
   const liveUrl = getRepoLiveUrl(repo);
 
   return (
-    <motion.article
+    <m.article
       initial={{ opacity: 0, y: 24 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.55, delay: index * 0.08 }}
@@ -334,13 +333,13 @@ function RepoCard({ repo, index }: { repo: GithubRepo; index: number }) {
           {formatDate(repo.pushed_at)}
         </span>
       </div>
-    </motion.article>
+    </m.article>
   );
 }
 
 function RepoSkeleton({ index }: { index: number }) {
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, y: 24 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.55, delay: index * 0.08 }}
@@ -361,7 +360,7 @@ function RepoSkeleton({ index }: { index: number }) {
         <div className="h-7 w-24 rounded-sm bg-white/[0.05]" />
       </div>
       <div className="mt-8 h-px bg-sakura/10" />
-    </motion.div>
+    </m.div>
   );
 }
 
@@ -447,7 +446,7 @@ export default function Projects() {
       <div className="absolute bottom-0 right-0 h-[34rem] w-[34rem] rounded-full bg-violet-glow/5 blur-[140px] pointer-events-none" />
 
       <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
@@ -482,18 +481,16 @@ export default function Projects() {
               </div>
             ))}
           </div>
-        </motion.div>
+        </m.div>
 
-        <FeaturedProjects />
-
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 32 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.15 }}
           className="mb-8"
         >
           <ContributionGraph activity={activity} total={contributionTotal} source={contributionSource} />
-        </motion.div>
+        </m.div>
 
         {hasGithubError && (
           <div className="mb-6 rounded-sm border border-sakura/20 bg-sakura/5 px-4 py-3 font-inter text-sm text-foreground-muted">
@@ -501,7 +498,7 @@ export default function Projects() {
           </div>
         )}
 
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.25 }}
@@ -510,7 +507,7 @@ export default function Projects() {
           {isLoading
             ? Array.from({ length: 6 }).map((_, index) => <RepoSkeleton key={index} index={index} />)
             : repos.map((repo, index) => <RepoCard key={repo.id} repo={repo} index={index} />)}
-        </motion.div>
+        </m.div>
 
         {!isLoading && repos.length === 0 && !hasGithubError && (
           <div className="mt-6 rounded-sm border border-sakura/10 bg-white/[0.025] p-8 text-center">

@@ -1,8 +1,43 @@
 import type { Metadata, Viewport } from "next";
+import {
+  Cinzel,
+  Cormorant_Garamond,
+  Inter,
+  JetBrains_Mono,
+} from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+
+const cinzel = Cinzel({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-cinzel",
+  display: "swap",
+});
+
+const cormorant = Cormorant_Garamond({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  style: ["normal", "italic"],
+  variable: "--font-cormorant",
+  display: "swap",
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+});
+
+const jetbrains = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-jetbrains",
+  display: "swap",
+});
+
+const fontVariables = `${cinzel.variable} ${cormorant.variable} ${inter.variable} ${jetbrains.variable}`;
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://bappadityakuilya.is-a.dev";
 
@@ -139,7 +174,30 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={fontVariables}>
+      <head>
+        <link
+          rel="preload"
+          as="image"
+          href="/images/cinematic-sakura-noble.webp"
+          type="image/webp"
+        />
+        {/* Noto Serif JP (CJK) is huge and only used for decorative Japanese
+            text. It can't be self-hosted via next/font in this Next version,
+            so it is loaded from Google with display=swap — only this tiny CSS
+            blocks render, the woff2 is swapped in non-blocking. */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+        {/* eslint-disable-next-line @next/next/no-page-custom-font */}
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400&display=swap"
+        />
+      </head>
       <body className="antialiased">
         <Script
           id="structured-data"

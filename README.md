@@ -1,127 +1,99 @@
-# Bappaditya Kuilya — Portfolio
+# Bappaditya Kuilya
 
-An ultra-premium cinematic portfolio website for Bappaditya Kuilya.
+**AI Systems Engineer**
 
-## 🌸 Design Philosophy
+I build intelligent systems with Python, modern web stacks, and large language models — combining technical precision with a sense of craft. Currently focused on AI-driven automation, LLM tooling, and full-stack products that solve real problems.
 
-- **Elegant** — Calm, disciplined, minimal
-- **Atmospheric** — Sakura petals, moonlight bloom, cinematic glow
-- **Premium** — Glassmorphism, luxury typography, refined motion
-- **Professional** — AI Systems Engineer portfolio with artistic styling
+- **Portfolio:** [bappadityakuilya.is-a.dev](https://bappadityakuilya.is-a.dev)
+- **GitHub:** [github.com/Bappaditya-kuilya](https://github.com/Bappaditya-kuilya)
+- **LinkedIn:** [linkedin.com/in/bappaditya-kuilya](https://linkedin.com/in/bappaditya-kuilya)
+- **Email:** [bappadityakuilya@gmail.com](mailto:bappadityakuilya@gmail.com)
 
-## 🎨 Visual Style
+---
 
-- Dark cinematic UI with sakura pink accents
-- Falling cherry blossom particles (Canvas API)
-- Glassmorphism cards with subtle borders
-- Moonlight bloom and ambient aura effects
-- Japanese typography overlays
-- Smooth parallax and spring physics animations
+# About Me
 
-## 🛠 Tech Stack
+I'm a Computer Science Engineering student at the University of Engineering & Management, Kolkata, specializing in AI systems, automation, and LLM engineering. I care about writing clean, intentional code and shipping scalable products that actually make a difference.
 
-- **Next.js 14** (App Router)
-- **React 18** + **TypeScript**
-- **Tailwind CSS**
-- **Framer Motion** (animations)
-- **Lucide React** (icons)
+My work sits at the intersection of machine learning and product engineering — from building AI workflows and LLM-powered applications to designing end-to-end web experiences. I'm based in Kolkata, India, and I'm open to opportunities and collaborations.
 
-## 🚀 Getting Started
+- **Location:** Kolkata, India
+- **Education:** B.Tech, Computer Science Engineering — UEM Kolkata (2024–2028)
+- **Focus:** AI Systems · Intelligent Automation · LLM Engineering
+- **Languages:** English, Bengali (Hindi — conversational)
 
-### Prerequisites
-- Node.js 18+
-- npm or yarn
+---
 
-### Installation
+# What I Build
 
-```bash
-# Clone or extract the project
-cd byakuya-portfolio
+- **AI Applications** — LLM-powered tools and intelligent automation built with Python and modern model APIs.
+- **Full-Stack Products** — End-to-end web applications across frontend, backend, APIs, and deployment.
+- **Developer Tools** — Utilities that help engineers work smarter with language models and workflows.
+- **AI Agents & LLM Tooling** — Agent design, prompt optimization, and token/cost efficiency.
+- **Open Source Software** — Contributing to AI/ML projects and sharing reusable tooling on GitHub.
 
-# Install dependencies
-npm install
+---
 
-# Run development server
-npm run dev
+# Featured Projects
 
-# Build for production
-npm run build
-```
+My strongest work lives on GitHub and is surfaced automatically in the portfolio's live project gallery, which pulls my public repositories and contribution activity in real time.
 
-### Contact Form
+- **GitHub** — [github.com/Bappaditya-kuilya](https://github.com/Bappaditya-kuilya): public repositories, stars, and a 12-month contribution calendar.
+- **Portfolio Gallery** — [bappadityakuilya.is-a.dev/#projects](https://bappadityakuilya.is-a.dev/#projects): curated case studies and live project showcase.
 
-The contact form uses Formspree. Create a form in Formspree, copy its endpoint, and add it to `.env.local`:
+Themes that run through my projects: AI workflow automation, LLM optimization tooling, security tooling, and polished full-stack products.
 
-```bash
-NEXT_PUBLIC_FORMSPREE_ENDPOINT=https://formspree.io/f/your-form-id
-```
+---
 
-For Vercel deployment, add the same value as an environment variable named `NEXT_PUBLIC_FORMSPREE_ENDPOINT`.
+# Tech Stack
 
-### Deploy to Vercel
+**Languages**
+Python · JavaScript · TypeScript
 
-```bash
-# Install Vercel CLI
-npm i -g vercel
+**Frontend**
+React · Next.js · Tailwind CSS · Framer Motion
 
-# Deploy
-vercel --prod
-```
+**Backend**
+Node.js
 
-Or connect your GitHub repository to Vercel for automatic deployments.
+**AI / ML**
+TensorFlow · LLM APIs · Streamlit
 
-## 📁 Project Structure
+**Databases**
+SQL
 
-```
-byakuya-portfolio/
-├── app/
-│   ├── components/       # Reusable components
-│   │   ├── SakuraParticles.tsx
-│   │   ├── Navigation.tsx
-│   │   └── Footer.tsx
-│   ├── sections/         # Page sections
-│   │   ├── Hero.tsx
-│   │   ├── About.tsx
-│   │   ├── Projects.tsx
-│   │   ├── Journey.tsx
-│   │   ├── Skills.tsx
-│   │   ├── Resume.tsx
-│   │   └── Contact.tsx
-│   ├── globals.css
-│   ├── layout.tsx
-│   └── page.tsx
-├── public/
-│   └── images/           # Background images
-├── lib/
-│   └── utils.ts
-├── tailwind.config.ts
-├── next.config.js
-└── package.json
-```
+**Cloud & DevOps**
+Vercel · Docker · Git · Linux
 
-## 🎭 Sections
+**Developer Tools**
+ESLint · clsx · tailwind-merge
 
-1. **Hero** — Cinematic opening with giant typography and atmospheric portrait area
-2. **About** — Luxury editorial bio with info cards
-3. **Projects** — GitHub-powered project arsenal with live public activity
-4. **Journey** — Timeline of education and achievements
-5. **Skills** — Premium grid with animated progress bars
-6. **Resume** — Interactive resume viewer with download
-7. **Contact** — Minimal luxury contact form
+---
 
-## 🌸 Features
+# Experience & Achievements
 
-- ✅ Fully responsive (mobile, tablet, desktop)
-- ✅ Dark mode only (elegant black/pink theme)
-- ✅ Smooth scroll navigation
-- ✅ Canvas-based sakura particle system
-- ✅ Glassmorphism UI elements
-- ✅ Framer Motion spring animations
-- ✅ Interactive hover effects
-- ✅ Resume preview modal
-- ✅ Contact form with validation
-- ✅ Optimized for Vercel deployment
+- **Hackathon Winner** (2026) — rapid execution and end-to-end product building under constraints.
+- **Open Source Contributor** (2026–present) — building and contributing AI/ML tooling for the developer community.
+- **B.Tech, Computer Science Engineering** — University of Engineering & Management, Kolkata · CGPA 8.11.
+- **160+ LeetCode** problems solved — consistent data structures and algorithms practice.
+- **Self-directed AI Systems Engineer** (2024–present) — deep work in Python, TensorFlow, and LLM APIs.
 
-## 📝 License
+---
 
-© 2025 Bappaditya Kuilya. All rights reserved.
+# Philosophy
+
+- Write code with intention — clarity beats cleverness, every time.
+- Precision and discipline outperform raw output; quality is a habit, not an event.
+- Practical AI first: ship systems that solve real problems, not demos that impress.
+- Performance and developer experience are not optional — they are the product.
+- Maintainability matters more than the first version looking finished.
+- Craft is quiet: a calm mind builds beautiful, resilient systems.
+
+---
+
+# Contact
+
+- **Portfolio:** [bappadityakuilya.is-a.dev](https://bappadityakuilya.is-a.dev)
+- **GitHub:** [github.com/Bappaditya-kuilya](https://github.com/Bappaditya-kuilya)
+- **LinkedIn:** [linkedin.com/in/bappaditya-kuilya](https://linkedin.com/in/bappaditya-kuilya)
+- **Email:** [bappadityakuilya@gmail.com](mailto:bappadityakuilya@gmail.com)

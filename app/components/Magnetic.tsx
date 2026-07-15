@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useMotionValue, useSpring } from "framer-motion";
+import { m, useMotionValue, useSpring } from "framer-motion";
 import { useRef, type ReactNode } from "react";
 
 // Wraps an element so it gently leans toward the cursor while hovered.
@@ -40,7 +40,7 @@ export default function Magnetic({
   };
 
   return (
-    <motion.div
+    <m.div
       ref={ref}
       onMouseMove={handleMove}
       onMouseLeave={reset}
@@ -48,6 +48,6 @@ export default function Magnetic({
       className={className}
     >
       {children}
-    </motion.div>
+    </m.div>
   );
 }

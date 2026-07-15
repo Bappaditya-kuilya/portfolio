@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
+import { m, useInView } from "framer-motion";
 import { useRef } from "react";
 import { Briefcase, GraduationCap, Award, Code } from "lucide-react";
 
@@ -45,7 +45,7 @@ function TimelineItem({ milestone, index }: { milestone: typeof milestones[0]; i
   const isLeft = index % 2 === 0;
 
   return (
-    <motion.div
+    <m.div
       ref={ref}
       initial={{ opacity: 0, x: isLeft ? -50 : 50 }}
       animate={isInView ? { opacity: 1, x: 0 } : {}}
@@ -91,7 +91,7 @@ function TimelineItem({ milestone, index }: { milestone: typeof milestones[0]; i
 
       {/* Spacer */}
       <div className="flex-1 hidden lg:block" />
-    </motion.div>
+    </m.div>
   );
 }
 
@@ -109,7 +109,7 @@ export default function Journey() {
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         {/* Section Header */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
@@ -125,7 +125,7 @@ export default function Journey() {
           <h2 className="font-cormorant text-4xl md:text-5xl lg:text-6xl text-foreground leading-tight">
             Path of <span className="text-gradient-sakura">Discipline</span>
           </h2>
-        </motion.div>
+        </m.div>
 
         {/* Timeline */}
         <div className="relative space-y-12 lg:space-y-0">

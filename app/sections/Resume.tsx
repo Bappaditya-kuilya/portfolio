@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
+import { m, useInView } from "framer-motion";
 import { useRef, useState } from "react";
 import { Download, Eye, FileText, Award, BookOpen, Briefcase, Code, X } from "lucide-react";
 
@@ -60,7 +60,7 @@ export default function Resume() {
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         {/* Section Header */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
@@ -76,11 +76,11 @@ export default function Resume() {
           <h2 className="font-cormorant text-4xl md:text-5xl lg:text-6xl text-foreground leading-tight mb-4">
             Professional <span className="text-gradient-sakura">Credentials</span>
           </h2>
-        </motion.div>
+        </m.div>
 
         <div className="grid lg:grid-cols-2 gap-12 items-start">
           {/* Left - Resume Viewer */}
-          <motion.div
+          <m.div
             initial={{ opacity: 0, x: -30 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.2 }}
@@ -116,7 +116,7 @@ export default function Resume() {
 
                 {/* Actions */}
                 <div className="flex justify-center gap-4 pt-4">
-                  <motion.button
+                  <m.button
                     onClick={() => setIsPreviewOpen(!isPreviewOpen)}
                     className="flex items-center gap-2 px-6 py-3 bg-sakura/20 border border-sakura/40 rounded-sm text-sm font-inter text-foreground hover:bg-sakura/30 transition-all duration-300"
                     whileHover={{ scale: 1.05 }}
@@ -124,8 +124,8 @@ export default function Resume() {
                   >
                     <Eye className="w-4 h-4" />
                     Preview
-                  </motion.button>
-                  <motion.a
+                  </m.button>
+                  <m.a
                     href={resumePdfPath}
                     download
                     className="flex items-center gap-2 px-6 py-3 border border-foreground/20 rounded-sm text-sm font-inter text-foreground-muted hover:border-foreground/40 hover:text-foreground transition-all duration-300"
@@ -134,7 +134,7 @@ export default function Resume() {
                   >
                     <Download className="w-4 h-4" />
                     Download PDF
-                  </motion.a>
+                  </m.a>
                 </div>
               </div>
             </div>
@@ -146,27 +146,27 @@ export default function Resume() {
                 { label: "Projects", value: "10+" },
                 { label: "Skills", value: "12+" },
               ].map((stat) => (
-                <motion.div
+                <m.div
                   key={stat.label}
                   className="glass-card rounded-sm p-4 text-center"
                   whileHover={{ scale: 1.05, borderColor: "rgba(255,126,182,0.3)" }}
                 >
                   <p className="font-cinzel text-2xl text-sakura">{stat.value}</p>
                   <p className="font-inter text-xs text-foreground-muted mt-1">{stat.label}</p>
-                </motion.div>
+                </m.div>
               ))}
             </div>
-          </motion.div>
+          </m.div>
 
           {/* Right - Highlights */}
-          <motion.div
+          <m.div
             initial={{ opacity: 0, x: 30 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.4 }}
             className="space-y-4"
           >
             {resumeHighlights.map((highlight, index) => (
-              <motion.div
+              <m.div
                 key={highlight.title}
                 initial={{ opacity: 0, y: 20 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -195,20 +195,20 @@ export default function Resume() {
                     </ul>
                   </div>
                 </div>
-              </motion.div>
+              </m.div>
             ))}
-          </motion.div>
+          </m.div>
         </div>
 
         {/* Preview Modal */}
         {isPreviewOpen && (
-          <motion.div
+          <m.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
             onClick={() => setIsPreviewOpen(false)}
           >
-            <motion.div
+            <m.div
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               className="glass-card flex h-[92vh] w-full max-w-6xl flex-col overflow-hidden rounded-sm p-4 sm:p-6"
@@ -247,8 +247,8 @@ export default function Resume() {
                   className="h-full w-full"
                 />
               </div>
-            </motion.div>
-          </motion.div>
+            </m.div>
+          </m.div>
         )}
       </div>
     </section>

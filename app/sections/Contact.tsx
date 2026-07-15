@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
+import { m, useInView } from "framer-motion";
 import { useRef, useState } from "react";
 import { Mail, MapPin, Send, Github, Linkedin } from "lucide-react";
 
@@ -79,7 +79,7 @@ export default function Contact() {
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         {/* Section Header */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
@@ -98,11 +98,11 @@ export default function Contact() {
           <p className="font-inter text-foreground-muted max-w-xl mx-auto">
             Have a project in mind? Let&apos;s discuss how we can build something extraordinary.
           </p>
-        </motion.div>
+        </m.div>
 
         <div className="grid lg:grid-cols-2 gap-12 max-w-5xl mx-auto">
           {/* Left - Contact Info */}
-          <motion.div
+          <m.div
             initial={{ opacity: 0, x: -30 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.2 }}
@@ -150,7 +150,7 @@ export default function Contact() {
                     { icon: Github, href: githubUrl, label: "GitHub" },
                     { icon: Linkedin, href: "https://linkedin.com/in/bappaditya-kuilya", label: "LinkedIn" },
                   ].map((social) => (
-                    <motion.a
+                    <m.a
                       key={social.label}
                       href={social.href}
                       target="_blank"
@@ -160,7 +160,7 @@ export default function Contact() {
                       whileTap={{ scale: 0.95 }}
                     >
                       <social.icon className="w-5 h-5" />
-                    </motion.a>
+                    </m.a>
                   ))}
                 </div>
               </div>
@@ -172,10 +172,10 @@ export default function Contact() {
                 &ldquo;In the world of code, I don&apos;t chase perfection. I pursue clarity.&rdquo;
               </p>
             </div>
-          </motion.div>
+          </m.div>
 
           {/* Right - Contact Form */}
-          <motion.div
+          <m.div
             initial={{ opacity: 0, x: 30 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.4 }}
@@ -228,7 +228,7 @@ export default function Contact() {
                 />
               </div>
 
-              <motion.button
+              <m.button
                 type="submit"
                 disabled={isSubmitting}
                 className="w-full flex items-center justify-center gap-3 px-6 py-4 bg-sakura/20 border border-sakura/40 rounded-sm text-sm font-inter text-foreground tracking-wider hover:bg-sakura/30 transition-all duration-300 disabled:opacity-50"
@@ -236,7 +236,7 @@ export default function Contact() {
                 whileTap={{ scale: 0.98 }}
               >
                 {isSubmitting ? (
-                  <motion.div
+                  <m.div
                     animate={{ rotate: 360 }}
                     transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
                     className="w-5 h-5 border-2 border-foreground border-t-transparent rounded-full"
@@ -249,7 +249,7 @@ export default function Contact() {
                     <Send className="w-4 h-4" />
                   </>
                 )}
-              </motion.button>
+              </m.button>
 
               {submissionStatus !== "idle" && (
                 <p
@@ -262,7 +262,7 @@ export default function Contact() {
                 </p>
               )}
             </form>
-          </motion.div>
+          </m.div>
         </div>
       </div>
     </section>
