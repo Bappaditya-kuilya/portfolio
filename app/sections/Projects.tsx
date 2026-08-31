@@ -3,15 +3,16 @@
 import { m, useInView } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
-  Calendar,
-  Code2,
-  ExternalLink,
-  GitCommitVertical,
-  Github,
+  CalendarBlank,
+  Code,
+  ArrowSquareOut,
+  GitCommit,
+  GithubLogo,
   GitFork,
-  Layers3,
+  Stack,
   Star,
-} from "lucide-react";
+} from "@phosphor-icons/react";
+import { ActivityCalendar, type Activity } from "react-activity-calendar";
 
 const GITHUB_USERNAME = "Bappaditya-kuilya";
 
@@ -55,11 +56,12 @@ const languageColors: Record<string, string> = {
 };
 
 function formatDate(date: string) {
+  const dateStr = date.includes("T") ? date.split("T")[0] : date;
   return new Intl.DateTimeFormat("en", {
     month: "short",
     day: "numeric",
     year: "numeric",
-  }).format(new Date(date));
+  }).format(new Date(dateStr));
 }
 
 function getActivityTone(count: number) {
@@ -117,6 +119,11 @@ function getRepoLiveUrl(repo: GithubRepo) {
   return null;
 }
 
+const sakuraTheme = {
+  dark: ["rgba(0,0,0,0.6)", "rgba(255,126,182,0.15)", "rgba(255,126,182,0.3)", "rgba(255,126,182,0.5)", "rgba(255,126,182,0.7)"],
+  light: ["#ebedf0", "#f4b6d2", "#ff7eb6", "#d48ac0", "#c470a8"],
+};
+
 function ContributionGraph({
   activity,
   total,
@@ -126,47 +133,26 @@ function ContributionGraph({
   total?: number;
   source: "public" | "authenticated";
 }) {
-  const totalCount = total ?? activity.reduce((sum, day) => sum + day.count, 0);
-  const activeDays = activity.filter((day) => day.count > 0).length;
-  const weeks = useMemo(() => {
-    const columns: ActivityDay[][] = [];
+  const [data, setData] = useState<Activity[]>([]);
 
-    activity.forEach((day, index) => {
-      const weekIndex = Math.floor(index / 7);
-      if (!columns[weekIndex]) {
-        columns[weekIndex] = [];
-      }
-      columns[weekIndex].push(day);
-    });
-
-    return columns;
+  useEffect(() => {
+    if (activity.length > 0) {
+      setData(
+        activity.map((day) => ({
+          date: day.date,
+          count: day.count,
+          level: day.count === 0 ? 0 : day.count <= 2 ? 1 : day.count <= 5 ? 2 : day.count <= 8 ? 3 : 4,
+        }))
+      );
+    }
   }, [activity]);
 
-  const monthLabels = useMemo(() => {
-    return weeks.map((week, index) => {
-      const firstDay = week[0];
-      if (!firstDay) {
-        return "";
-      }
-
-      const date = new Date(firstDay.date);
-      const previousDate = index > 0 ? new Date(weeks[index - 1][0]?.date ?? firstDay.date) : null;
-      const month = date.toLocaleString("en", { month: "short" });
-
-      if (index === 0 || !previousDate || previousDate.getMonth() !== date.getMonth()) {
-        return month;
-      }
-
-      return "";
-    });
-  }, [weeks]);
-
   return (
-    <div className="glass-card min-w-0 rounded-sm p-4 sm:p-5 lg:p-6">
+    <div className="glass-card min-w-0 rounded-xl p-4 sm:p-5 lg:p-6">
       <div className="mb-5 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div>
           <div className="mb-2 flex items-center gap-2">
-            <GitCommitVertical className="h-4 w-4 text-sakura" />
+            <GitCommit className="h-4 w-4 text-sakura" />
             <span className="font-inter text-xs uppercase tracking-[0.3em] text-sakura">
               Live GitHub Pulse
             </span>
@@ -175,13 +161,13 @@ function ContributionGraph({
         </div>
         <div className="grid grid-cols-2 gap-3 sm:text-right">
           <div>
-            <p className="font-cinzel text-xl text-foreground sm:text-2xl">{totalCount}</p>
+            <p className="font-cinzel text-xl text-foreground sm:text-2xl">{total ?? activity.reduce((sum, day) => sum + day.count, 0)}</p>
             <p className="font-inter text-[10px] uppercase tracking-[0.18em] text-foreground-muted">
               Events
             </p>
           </div>
           <div>
-            <p className="font-cinzel text-xl text-foreground sm:text-2xl">{activeDays}</p>
+            <p className="font-cinzel text-xl text-foreground sm:text-2xl">{activity.filter((day) => day.count > 0).length}</p>
             <p className="font-inter text-[10px] uppercase tracking-[0.18em] text-foreground-muted">
               Active Days
             </p>
@@ -189,45 +175,36 @@ function ContributionGraph({
         </div>
       </div>
 
-      <div className="min-w-0 overflow-x-auto pb-2">
-        <div className="min-w-max">
-          <div
-            className="mb-3 grid gap-1 pl-6"
-            style={{ gridTemplateColumns: `repeat(${weeks.length}, minmax(0, 1fr))` }}
-          >
-            {monthLabels.map((label, index) => (
-              <span
-                key={`${label}-${index}`}
-                className="font-inter text-[10px] uppercase tracking-[0.18em] text-foreground-muted"
-              >
-                {label}
-              </span>
+      <div className="min-w-0 overflow-x-auto pb-2 [&_svg]:w-full [&_svg]:h-auto [&_rect]:outline-none">
+        {data.length === 0 && (
+          <div className="flex gap-[3px] animate-pulse">
+            {Array.from({ length: 52 }).map((_, i) => (
+              <div key={i} className="flex flex-col gap-[3px]">
+                {Array.from({ length: 7 }).map((_, j) => (
+                  <div key={j} className="w-[12px] h-[12px] rounded-[3px] bg-white/5" />
+                ))}
+              </div>
             ))}
           </div>
-
-          <div className="flex gap-3">
-            <div className="grid grid-rows-7 gap-1 pt-[1px]">
-              {["Sun", "", "Tue", "", "Thu", "", "Sat"].map((label, index) => (
-                <span
-                  key={`${label || "spacer"}-${index}`}
-                  className="h-3 font-inter text-[10px] leading-3 text-foreground-muted"
-                >
-                  {label}
-                </span>
-              ))}
-            </div>
-
-            <div className="grid grid-flow-col grid-rows-7 gap-1">
-              {activity.map((day) => (
-                <div
-                  key={day.date}
-                  title={`${formatDate(day.date)}: ${day.count} contribution${day.count === 1 ? "" : "s"}`}
-                  className={`h-3 w-3 rounded-[2px] border border-white/[0.03] transition-transform duration-300 hover:scale-125 ${getActivityTone(day.count)}`}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
+        )}
+        {data.length > 0 && (
+          <ActivityCalendar
+            data={data}
+            theme={sakuraTheme}
+            labels={{
+              totalCount: "{{count}} contributions in {{year}}",
+            }}
+            blockSize={12}
+            blockMargin={3}
+            colorScheme="dark"
+            tooltips={{
+              activity: {
+                text: ({ date, count }) =>
+                  `${count} contribution${count === 1 ? "" : "s"} on ${date}`,
+              },
+            }}
+          />
+        )}
       </div>
 
       <div className="mt-4 flex flex-col gap-3 text-foreground-muted sm:flex-row sm:items-center sm:justify-between">
@@ -238,13 +215,6 @@ function ContributionGraph({
               Public GitHub view only. Private and owner-only contributions will not appear here.
             </p>
           )}
-        </div>
-        <div className="flex items-center gap-1">
-          <span className="font-inter text-[10px]">Less</span>
-          {[0, 1, 3, 6, 9].map((count) => (
-            <span key={count} className={`h-3 w-3 rounded-[2px] ${getActivityTone(count)}`} />
-          ))}
-          <span className="font-inter text-[10px]">More</span>
         </div>
       </div>
     </div>
@@ -261,13 +231,13 @@ function RepoCard({ repo, index }: { repo: GithubRepo; index: number }) {
       initial={{ opacity: 0, y: 24 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.55, delay: index * 0.08 }}
-      className="group relative min-h-[19rem] overflow-hidden rounded-sm border border-sakura/10 bg-white/[0.025] p-6 backdrop-blur-xl transition-all duration-500 hover:-translate-y-1 hover:border-sakura/30 hover:bg-white/[0.04]"
+      className="group relative min-h-[19rem] overflow-hidden rounded-xl border border-sakura/10 bg-white/[0.025] p-6 backdrop-blur-xl transition-all duration-500 hover:-translate-y-1 hover:border-sakura/30 hover:bg-white/[0.04]"
     >
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-sakura/50 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
 
       <div className="mb-6 flex items-start justify-between gap-4">
-        <div className="flex h-11 w-11 items-center justify-center rounded-sm border border-sakura/15 bg-sakura/10 text-sakura">
-          <Code2 className="h-5 w-5" />
+        <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-sakura/15 bg-sakura/10 text-sakura">
+          <Code className="h-5 w-5" />
         </div>
         <div className="flex items-center gap-2">
           <a
@@ -275,9 +245,9 @@ function RepoCard({ repo, index }: { repo: GithubRepo; index: number }) {
             target="_blank"
             rel="noopener noreferrer"
             aria-label={`${repo.name} source on GitHub`}
-            className="rounded-sm border border-foreground/10 p-2 text-foreground-muted transition-all duration-300 hover:border-sakura/30 hover:text-sakura"
+            className="rounded-xl border border-foreground/10 p-2 text-foreground-muted transition-all duration-300 hover:border-sakura/30 hover:text-sakura"
           >
-            <Github className="h-4 w-4" />
+            <GithubLogo className="h-4 w-4" />
           </a>
           {liveUrl && (
             <a
@@ -285,9 +255,9 @@ function RepoCard({ repo, index }: { repo: GithubRepo; index: number }) {
               target="_blank"
               rel="noopener noreferrer"
               aria-label={`${repo.name} live project`}
-              className="rounded-sm border border-foreground/10 p-2 text-foreground-muted transition-all duration-300 hover:border-sakura/30 hover:text-sakura"
+              className="rounded-xl border border-foreground/10 p-2 text-foreground-muted transition-all duration-300 hover:border-sakura/30 hover:text-sakura"
             >
-              <ExternalLink className="h-4 w-4" />
+              <ArrowSquareOut className="h-4 w-4" />
             </a>
           )}
         </div>
@@ -302,7 +272,7 @@ function RepoCard({ repo, index }: { repo: GithubRepo; index: number }) {
 
       <div className="mt-6 flex flex-wrap gap-2">
         {repo.language && (
-          <span className="inline-flex items-center gap-2 rounded-sm border border-foreground/10 bg-background-secondary/70 px-3 py-1 text-xs font-inter text-foreground-dim">
+          <span className="inline-flex items-center gap-2 rounded-xl border border-foreground/10 bg-background-secondary/70 px-3 py-1 text-xs font-inter text-foreground-dim">
             <span className="h-2 w-2 rounded-full" style={{ backgroundColor: languageColor }} />
             {repo.language}
           </span>
@@ -310,7 +280,7 @@ function RepoCard({ repo, index }: { repo: GithubRepo; index: number }) {
         {topics.map((topic) => (
           <span
             key={topic}
-            className="rounded-sm border border-sakura/15 bg-sakura/5 px-3 py-1 text-xs font-inter text-sakura-light"
+            className="rounded-xl border border-sakura/15 bg-sakura/5 px-3 py-1 text-xs font-inter text-sakura-light"
           >
             {topic}
           </span>
@@ -329,7 +299,7 @@ function RepoCard({ repo, index }: { repo: GithubRepo; index: number }) {
           </span>
         </div>
         <span className="inline-flex items-center gap-1.5 font-inter text-[10px] uppercase tracking-[0.18em] text-foreground-muted">
-          <Calendar className="h-3.5 w-3.5" />
+          <CalendarBlank className="h-3.5 w-3.5" />
           {formatDate(repo.pushed_at)}
         </span>
       </div>
@@ -343,21 +313,21 @@ function RepoSkeleton({ index }: { index: number }) {
       initial={{ opacity: 0, y: 24 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.55, delay: index * 0.08 }}
-      className="min-h-[19rem] rounded-sm border border-sakura/10 bg-white/[0.025] p-6"
+      className="min-h-[19rem] rounded-xl border border-sakura/10 bg-white/[0.025] p-6"
     >
       <div className="mb-6 flex items-start justify-between">
-        <div className="h-11 w-11 rounded-sm bg-sakura/10" />
-        <div className="h-9 w-20 rounded-sm bg-white/[0.05]" />
+        <div className="h-11 w-11 rounded-xl bg-sakura/10" />
+        <div className="h-9 w-20 rounded-xl bg-white/[0.05]" />
       </div>
-      <div className="mb-4 h-7 w-2/3 rounded-sm bg-white/[0.06]" />
+      <div className="mb-4 h-7 w-2/3 rounded-xl bg-white/[0.06]" />
       <div className="space-y-3">
-        <div className="h-3 w-full rounded-sm bg-white/[0.045]" />
-        <div className="h-3 w-5/6 rounded-sm bg-white/[0.045]" />
-        <div className="h-3 w-2/3 rounded-sm bg-white/[0.045]" />
+        <div className="h-3 w-full rounded-xl bg-white/[0.045]" />
+        <div className="h-3 w-5/6 rounded-xl bg-white/[0.045]" />
+        <div className="h-3 w-2/3 rounded-xl bg-white/[0.045]" />
       </div>
       <div className="mt-8 flex gap-2">
-        <div className="h-7 w-20 rounded-sm bg-white/[0.05]" />
-        <div className="h-7 w-24 rounded-sm bg-white/[0.05]" />
+        <div className="h-7 w-20 rounded-xl bg-white/[0.05]" />
+        <div className="h-7 w-24 rounded-xl bg-white/[0.05]" />
       </div>
       <div className="mt-8 h-px bg-sakura/10" />
     </m.div>
@@ -468,11 +438,11 @@ export default function Projects() {
 
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
             {[
-              { label: "Repos", value: isLoading ? "..." : repoCount.toString(), icon: Layers3 },
-              { label: "Languages", value: isLoading ? "..." : languageCount.toString(), icon: Code2 },
+              { label: "Repos", value: isLoading ? "..." : repoCount.toString(), icon: Stack },
+              { label: "Languages", value: isLoading ? "..." : languageCount.toString(), icon: Code },
               { label: "Stars", value: isLoading ? "..." : totalStars.toString(), icon: Star },
             ].map((item) => (
-              <div key={item.label} className="rounded-sm border border-sakura/10 bg-white/[0.025] p-4">
+              <div key={item.label} className="rounded-xl border border-sakura/10 bg-white/[0.025] p-4">
                 <item.icon className="mb-3 h-4 w-4 text-sakura" />
                 <p className="font-cinzel text-2xl text-foreground">{item.value}</p>
                 <p className="font-inter text-[10px] uppercase tracking-[0.18em] text-foreground-muted">
@@ -493,7 +463,7 @@ export default function Projects() {
         </m.div>
 
         {hasGithubError && (
-          <div className="mb-6 rounded-sm border border-sakura/20 bg-sakura/5 px-4 py-3 font-inter text-sm text-foreground-muted">
+          <div className="mb-6 rounded-xl border border-sakura/20 bg-sakura/5 px-4 py-3 font-inter text-sm text-foreground-muted">
             GitHub public data is temporarily unavailable. The profile link above remains available.
           </div>
         )}
@@ -510,7 +480,7 @@ export default function Projects() {
         </m.div>
 
         {!isLoading && repos.length === 0 && !hasGithubError && (
-          <div className="mt-6 rounded-sm border border-sakura/10 bg-white/[0.025] p-8 text-center">
+          <div className="mt-6 rounded-xl border border-sakura/10 bg-white/[0.025] p-8 text-center">
             <p className="font-cormorant text-2xl text-foreground">No public repositories found.</p>
             <p className="mt-2 font-inter text-sm text-foreground-muted">
               New public repositories from GitHub will appear here automatically.

@@ -1,4 +1,6 @@
-import { Flower2, Heart } from "lucide-react";
+"use client";
+
+import { Flower, Heart } from "@phosphor-icons/react";
 
 export default function Footer() {
   return (
@@ -7,7 +9,7 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           {/* Logo */}
           <div className="flex items-center gap-3 transition-transform duration-300 hover:scale-[1.02]">
-            <Flower2 className="w-5 h-5 text-sakura" />
+            <Flower className="w-5 h-5 text-sakura" />
             <div className="flex flex-col">
               <span className="font-cinzel text-xs text-foreground tracking-[0.18em] uppercase">
               Bappaditya Kuilya

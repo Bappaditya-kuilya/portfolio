@@ -2,7 +2,7 @@
 
 import { m, useInView } from "framer-motion";
 import { useRef } from "react";
-import { Briefcase, GraduationCap, Award, Code } from "lucide-react";
+import { Briefcase, GraduationCap, Trophy, Code } from "@phosphor-icons/react";
 
 const milestones = [
   {
@@ -22,7 +22,7 @@ const milestones = [
     highlights: ["AI Workflows", "Security Tooling", "LLM Optimization"],
   },
   {
-    icon: Award,
+    icon: Trophy,
     title: "Full Stack Development",
     organization: "Projects, Freelance Builds & Product Prototypes",
     period: "2024 — Present",
@@ -54,9 +54,9 @@ function TimelineItem({ milestone, index }: { milestone: typeof milestones[0]; i
     >
       {/* Content */}
       <div className={`flex-1 ${isLeft ? "lg:text-right" : "lg:text-left"}`}>
-        <div className="glass-card rounded-sm p-6 lg:p-8 hover:border-sakura/30 transition-all duration-500">
+        <div className="glass-card rounded-xl p-6 lg:p-8 hover:border-sakura/30 transition-all duration-500">
           <div className={`flex items-center gap-3 mb-4 ${isLeft ? "lg:justify-end" : ""}`}>
-            <div className="p-2 rounded-sm bg-sakura/10 text-sakura">
+            <div className="p-2 rounded-xl bg-sakura/10 text-sakura">
               <milestone.icon className="w-5 h-5" />
             </div>
             <span className="font-jetbrains text-xs text-sakura tracking-wider">
@@ -74,7 +74,7 @@ function TimelineItem({ milestone, index }: { milestone: typeof milestones[0]; i
             {milestone.highlights.map((highlight) => (
               <span
                 key={highlight}
-                className="px-3 py-1 border border-sakura/20 rounded-sm text-xs font-inter text-sakura-light"
+                className="px-3 py-1 border border-sakura/20 rounded-xl text-xs font-inter text-sakura-light"
               >
                 {highlight}
               </span>

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { m, AnimatePresence } from "framer-motion";
-import { Menu, X, Flower2 } from "lucide-react";
+import { List, X, Flower } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
 
 const navItems = [
@@ -75,7 +75,7 @@ export default function Navigation() {
               className="flex items-center gap-3 group"
               whileHover={{ scale: 1.02 }}
             >
-              <Flower2 className="w-6 h-6 text-sakura transition-transform group-hover:rotate-45 duration-500" />
+              <Flower className="w-6 h-6 text-sakura transition-transform group-hover:rotate-45 duration-500" />
               <div className="flex flex-col">
                 <span className="font-cinzel text-sm text-foreground tracking-[0.18em] uppercase">
                   Bappaditya Kuilya
@@ -121,7 +121,7 @@ export default function Navigation() {
                 e.preventDefault();
                 scrollToSection("#resume");
               }}
-              className="hidden lg:flex items-center gap-2 px-5 py-2.5 border border-sakura/30 rounded-sm text-sm font-inter text-sakura hover:bg-sakura/10 transition-all duration-300"
+              className="hidden lg:flex items-center gap-2 px-5 py-2.5 border border-sakura/30 rounded-xl text-sm font-inter text-sakura hover:bg-sakura/10 transition-all duration-300"
               whileHover={{ scale: 1.05, borderColor: "rgba(255,126,182,0.5)" }}
               whileTap={{ scale: 0.98 }}
             >
@@ -146,7 +146,7 @@ export default function Navigation() {
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="lg:hidden p-2 text-foreground-muted hover:text-foreground transition-colors"
             >
-              {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {isMobileMenuOpen ? <X className="w-6 h-6" /> : <List className="w-6 h-6" />}
             </button>
           </div>
         </div>

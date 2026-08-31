@@ -2,7 +2,7 @@
 
 import { m, useInView } from "framer-motion";
 import { useRef, useState } from "react";
-import { Download, Eye, FileText, Award, BookOpen, Briefcase, Code, X } from "lucide-react";
+import { Download, Eye, FileText, Trophy, BookOpen, Briefcase, Code, X } from "@phosphor-icons/react";
 
 const resumePdfPath = "/resume.pdf";
 
@@ -35,7 +35,7 @@ const resumeHighlights = [
     ],
   },
   {
-    icon: Award,
+    icon: Trophy,
     title: "Achievements",
     items: [
       "Hackathon Winner",
@@ -87,7 +87,7 @@ export default function Resume() {
             className="space-y-6"
           >
             {/* Resume Card */}
-            <div className="glass-card rounded-sm p-8 relative overflow-hidden">
+            <div className="glass-card rounded-xl p-8 relative overflow-hidden">
               {/* Decorative corners */}
               <div className="absolute top-0 left-0 w-8 h-8 border-t border-l border-sakura/30" />
               <div className="absolute top-0 right-0 w-8 h-8 border-t border-r border-sakura/30" />
@@ -118,7 +118,7 @@ export default function Resume() {
                 <div className="flex justify-center gap-4 pt-4">
                   <m.button
                     onClick={() => setIsPreviewOpen(!isPreviewOpen)}
-                    className="flex items-center gap-2 px-6 py-3 bg-sakura/20 border border-sakura/40 rounded-sm text-sm font-inter text-foreground hover:bg-sakura/30 transition-all duration-300"
+                    className="flex items-center gap-2 px-6 py-3 bg-sakura/20 border border-sakura/40 rounded-xl text-sm font-inter text-foreground hover:bg-sakura/30 transition-all duration-300"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.98 }}
                   >
@@ -128,7 +128,7 @@ export default function Resume() {
                   <m.a
                     href={resumePdfPath}
                     download
-                    className="flex items-center gap-2 px-6 py-3 border border-foreground/20 rounded-sm text-sm font-inter text-foreground-muted hover:border-foreground/40 hover:text-foreground transition-all duration-300"
+                    className="flex items-center gap-2 px-6 py-3 border border-foreground/20 rounded-xl text-sm font-inter text-foreground-muted hover:border-foreground/40 hover:text-foreground transition-all duration-300"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.98 }}
                   >
@@ -148,7 +148,7 @@ export default function Resume() {
               ].map((stat) => (
                 <m.div
                   key={stat.label}
-                  className="glass-card rounded-sm p-4 text-center"
+                  className="glass-card rounded-xl p-4 text-center"
                   whileHover={{ scale: 1.05, borderColor: "rgba(255,126,182,0.3)" }}
                 >
                   <p className="font-cinzel text-2xl text-sakura">{stat.value}</p>
@@ -171,11 +171,11 @@ export default function Resume() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.5, delay: 0.5 + index * 0.1 }}
-                className="glass-card rounded-sm p-6 group hover:border-sakura/30 transition-all duration-500"
+                className="glass-card rounded-xl p-6 group hover:border-sakura/30 transition-all duration-500"
                 whileHover={{ x: 5 }}
               >
                 <div className="flex items-start gap-4">
-                  <div className="p-3 rounded-sm bg-sakura/10 text-sakura group-hover:bg-sakura/20 transition-colors duration-300">
+                  <div className="p-3 rounded-xl bg-sakura/10 text-sakura group-hover:bg-sakura/20 transition-colors duration-300">
                     <highlight.icon className="w-5 h-5" />
                   </div>
                   <div className="flex-1">
@@ -211,7 +211,7 @@ export default function Resume() {
             <m.div
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              className="glass-card flex h-[92vh] w-full max-w-6xl flex-col overflow-hidden rounded-sm p-4 sm:p-6"
+              className="glass-card flex h-[92vh] w-full max-w-6xl flex-col overflow-hidden rounded-xl p-4 sm:p-6"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="mb-4 flex items-center justify-between gap-4">
@@ -240,7 +240,7 @@ export default function Resume() {
                 </div>
               </div>
 
-              <div className="relative min-h-0 flex-1 overflow-hidden rounded-sm border border-sakura/10 bg-white">
+              <div className="relative min-h-0 flex-1 overflow-hidden rounded-xl border border-sakura/10 bg-white">
                 <iframe
                   src={`${resumePdfPath}#toolbar=1&navpanes=0&view=FitH`}
                   title="Bappaditya Kuilya resume PDF"

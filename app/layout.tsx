@@ -64,7 +64,7 @@ export const metadata: Metadata = {
     "Machine Learning Engineer",
     "Full Stack Developer",
     "Python Developer Kolkata",
-    "React",
+    "React Developer India",
     "TensorFlow",
     "LLM APIs",
     "UEM Kolkata",
@@ -75,11 +75,8 @@ export const metadata: Metadata = {
   publisher: PERSON_NAME,
   applicationName: "Bappaditya Kuilya — Portfolio",
   alternates: {
-    canonical: "/",
+    canonical: siteUrl,
   },
-  // Paste the token from Google Search Console (Settings → Ownership
-  // verification → HTML tag) into NEXT_PUBLIC_GOOGLE_VERIFICATION to claim
-  // the site. This is the single biggest lever for ranking on your name.
   verification: process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION
     ? { google: process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION }
     : undefined,
@@ -91,6 +88,15 @@ export const metadata: Metadata = {
     description:
       "Building intelligent systems with precision, discipline, and cinematic engineering.",
     locale: "en_US",
+    images: [
+      {
+        url: "/og.svg",
+        width: 1200,
+        height: 630,
+        alt: "Bappaditya Kuilya — AI Systems Engineer Portfolio",
+        type: "image/svg+xml",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
@@ -98,6 +104,12 @@ export const metadata: Metadata = {
     description:
       "Building intelligent systems with precision, discipline, and cinematic engineering.",
     creator: "@bappaditya",
+    images: ["/og.svg"],
+  },
+  icons: {
+    icon: "/favicon.svg",
+    shortcut: "/favicon.svg",
+    apple: "/favicon.svg",
   },
   robots: {
     index: true,
@@ -113,7 +125,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#030303",
+  themeColor: "#000000",
   colorScheme: "dark",
 };
 
@@ -126,6 +138,7 @@ const jsonLd = {
       name: PERSON_NAME,
       alternateName: "Bappaditya",
       url: siteUrl,
+      image: `${siteUrl}/images/bappaditya-kuilya.jpeg`,
       email: `mailto:${EMAIL}`,
       jobTitle: "AI Systems Engineer",
       description:
@@ -133,11 +146,13 @@ const jsonLd = {
       address: {
         "@type": "PostalAddress",
         addressLocality: "Kolkata",
+        addressRegion: "West Bengal",
         addressCountry: "IN",
       },
       alumniOf: {
         "@type": "CollegeOrUniversity",
         name: "University of Engineering & Management, Kolkata",
+        url: "https://uem.edu.in",
       },
       knowsAbout: [
         "Artificial Intelligence",
@@ -146,14 +161,22 @@ const jsonLd = {
         "Full Stack Development",
         "Python",
         "React",
+        "TensorFlow",
+        "Natural Language Processing",
       ],
-      sameAs: [GITHUB_URL, LINKEDIN_URL],
+      sameAs: [
+        GITHUB_URL,
+        LINKEDIN_URL,
+        "https://bappadityakuilya.is-a.dev",
+      ],
     },
     {
       "@type": "WebSite",
       "@id": `${siteUrl}/#website`,
       url: siteUrl,
-      name: "Bappaditya Kuilya — Portfolio",
+      name: "Bappaditya Kuilya — AI Systems Engineer Portfolio",
+      description:
+        "Portfolio of Bappaditya Kuilya — AI Systems Engineer from Kolkata, India.",
       publisher: { "@id": `${siteUrl}/#person` },
       inLanguage: "en",
     },
@@ -162,8 +185,11 @@ const jsonLd = {
       "@id": `${siteUrl}/#profilepage`,
       url: siteUrl,
       name: "Bappaditya Kuilya | AI Systems Engineer",
+      description:
+        "AI Systems Engineer building intelligent systems with precision, discipline, and cinematic engineering.",
       isPartOf: { "@id": `${siteUrl}/#website` },
       about: { "@id": `${siteUrl}/#person` },
+      lastReviewed: new Date().toISOString().split("T")[0],
     },
   ],
 };
@@ -176,16 +202,6 @@ export default function RootLayout({
   return (
     <html lang="en" className={fontVariables}>
       <head>
-        <link
-          rel="preload"
-          as="image"
-          href="/images/cinematic-sakura-noble.webp"
-          type="image/webp"
-        />
-        {/* Noto Serif JP (CJK) is huge and only used for decorative Japanese
-            text. It can't be self-hosted via next/font in this Next version,
-            so it is loaded from Google with display=swap — only this tiny CSS
-            blocks render, the woff2 is swapped in non-blocking. */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
           rel="preconnect"
@@ -197,12 +213,13 @@ export default function RootLayout({
           rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400&display=swap"
         />
+        <link rel="me" href={GITHUB_URL} />
+        <link rel="me" href={LINKEDIN_URL} />
+        <meta name="author" content={PERSON_NAME} />
       </head>
       <body className="antialiased">
-        <Script
-          id="structured-data"
+        <script
           type="application/ld+json"
-          strategy="beforeInteractive"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
 

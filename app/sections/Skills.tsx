@@ -3,29 +3,29 @@
 import { m, useInView } from "framer-motion";
 import { useMemo, useRef, useState } from "react";
 import {
-  BrainCircuit,
-  Code2,
+  Brain,
+  Code,
   Cpu,
   Database,
   GitBranch,
-  Layers3,
-  Server,
+  Stack,
+  HardDrives,
   ShieldCheck,
-  Sparkles,
+  Sparkle,
   Terminal,
   Trophy,
-} from "lucide-react";
+} from "@phosphor-icons/react";
 
 const skills = [
   { name: "Python", level: 95, category: "Language", color: "#ff7eb6", icon: Terminal, accent: "sakura" },
-  { name: "JavaScript", level: 90, category: "Language", color: "#e8d7b9", icon: Code2, accent: "champagne" },
-  { name: "React", level: 88, category: "Frontend", color: "#9fb3c8", icon: Layers3, accent: "steel" },
-  { name: "Node.js", level: 85, category: "Backend", color: "#f4b6d2", icon: Server, accent: "sakura" },
-  { name: "TensorFlow", level: 82, category: "AI/ML", color: "#e8d7b9", icon: BrainCircuit, accent: "champagne" },
+  { name: "JavaScript", level: 90, category: "Language", color: "#e8d7b9", icon: Code, accent: "champagne" },
+  { name: "React", level: 88, category: "Frontend", color: "#9fb3c8", icon: Stack, accent: "steel" },
+  { name: "Node.js", level: 85, category: "Backend", color: "#f4b6d2", icon: HardDrives, accent: "sakura" },
+  { name: "TensorFlow", level: 82, category: "AI/ML", color: "#e8d7b9", icon: Brain, accent: "champagne" },
   { name: "LLM APIs", level: 90, category: "AI/ML", color: "#ff7eb6", icon: Cpu, accent: "sakura" },
-  { name: "Docker", level: 78, category: "DevOps", color: "#9fb3c8", icon: Server, accent: "steel" },
+  { name: "Docker", level: 78, category: "DevOps", color: "#9fb3c8", icon: HardDrives, accent: "steel" },
   { name: "Git", level: 92, category: "Tools", color: "#f4b6d2", icon: GitBranch, accent: "sakura" },
-  { name: "Streamlit", level: 85, category: "Tools", color: "#e8d7b9", icon: Sparkles, accent: "champagne" },
+  { name: "Streamlit", level: 85, category: "Tools", color: "#e8d7b9", icon: Sparkle, accent: "champagne" },
   { name: "SQL", level: 80, category: "Database", color: "#9fb3c8", icon: Database, accent: "steel" },
   { name: "Linux", level: 88, category: "System", color: "#ff7eb6", icon: Terminal, accent: "sakura" },
   { name: "DSA", level: 85, category: "Core", color: "#e8d7b9", icon: ShieldCheck, accent: "champagne" },
@@ -35,9 +35,9 @@ const categories = ["All", "Language", "Frontend", "Backend", "AI/ML", "DevOps",
 
 const stats = [
   { value: "8.11", label: "CGPA", detail: "academic precision", icon: Trophy },
-  { value: "Winner", label: "Hackathon", detail: "rapid execution", icon: Sparkles },
-  { value: "160+", label: "LeetCode", detail: "problem solving", icon: Code2 },
-  { value: "AI", label: "Systems Builder", detail: "automation focus", icon: BrainCircuit },
+  { value: "Winner", label: "Hackathon", detail: "rapid execution", icon: Sparkle },
+  { value: "160+", label: "LeetCode", detail: "problem solving", icon: Code },
+  { value: "AI", label: "Systems Builder", detail: "automation focus", icon: Brain },
 ];
 
 function getAccentClass(accent: string) {

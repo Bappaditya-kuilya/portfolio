@@ -2,7 +2,7 @@
 
 import { m, useInView } from "framer-motion";
 import { useRef, useState } from "react";
-import { Mail, MapPin, Send, Github, Linkedin } from "lucide-react";
+import { Envelope, MapPin, PaperPlane, GithubLogo, LinkedinLogo } from "@phosphor-icons/react";
 
 const initialFormState = { name: "", email: "", message: "" };
 const CONTACT_EMAIL = "bappadityakuilya@gmail.com";
@@ -108,15 +108,15 @@ export default function Contact() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="space-y-8"
           >
-            <div className="glass-card rounded-sm p-8">
+            <div className="glass-card rounded-xl p-8">
               <h3 className="font-cinzel text-2xl text-foreground mb-6">
                 Get in Touch
               </h3>
 
               <div className="space-y-6">
                 <div className="flex items-start gap-4">
-                  <div className="p-3 rounded-sm bg-sakura/10 text-sakura">
-                    <Mail className="w-5 h-5" />
+                  <div className="p-3 rounded-xl bg-sakura/10 text-sakura">
+                    <Envelope className="w-5 h-5" />
                   </div>
                   <div>
                     <p className="font-inter text-sm text-foreground-muted mb-1">Email</p>
@@ -130,7 +130,7 @@ export default function Contact() {
                 </div>
 
                 <div className="flex items-start gap-4">
-                  <div className="p-3 rounded-sm bg-sakura/10 text-sakura">
+                  <div className="p-3 rounded-xl bg-sakura/10 text-sakura">
                     <MapPin className="w-5 h-5" />
                   </div>
                   <div>
@@ -147,15 +147,15 @@ export default function Contact() {
                 <p className="font-inter text-sm text-foreground-muted">Connect on</p>
                 <div className="flex gap-3">
                   {[
-                    { icon: Github, href: githubUrl, label: "GitHub" },
-                    { icon: Linkedin, href: "https://linkedin.com/in/bappaditya-kuilya", label: "LinkedIn" },
+                    { icon: GithubLogo, href: githubUrl, label: "GitHub" },
+                    { icon: LinkedinLogo, href: "https://linkedin.com/in/bappaditya-kuilya", label: "LinkedIn" },
                   ].map((social) => (
                     <m.a
                       key={social.label}
                       href={social.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="p-3 border border-foreground/10 rounded-sm text-foreground-muted hover:text-sakura hover:border-sakura/30 transition-all duration-300"
+                      className="p-3 border border-foreground/10 rounded-xl text-foreground-muted hover:text-sakura hover:border-sakura/30 transition-all duration-300"
                       whileHover={{ y: -3, boxShadow: "0 0 20px rgba(255,126,182,0.15)" }}
                       whileTap={{ scale: 0.95 }}
                     >
@@ -167,7 +167,7 @@ export default function Contact() {
             </div>
 
             {/* Quote */}
-            <div className="glass-card rounded-sm p-6 border-l-2 border-sakura/30">
+            <div className="glass-card rounded-xl p-6 border-l-2 border-sakura/30">
               <p className="font-cormorant text-xl text-foreground-dim italic leading-relaxed">
                 &ldquo;In the world of code, I don&apos;t chase perfection. I pursue clarity.&rdquo;
               </p>
@@ -180,7 +180,7 @@ export default function Contact() {
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
-            <form onSubmit={handleSubmit} className="glass-card rounded-sm p-8 space-y-6">
+            <form onSubmit={handleSubmit} className="glass-card rounded-xl p-8 space-y-6">
               <div>
                 <label className="block font-inter text-xs text-foreground-muted tracking-wider uppercase mb-2">
                   Name
@@ -191,7 +191,7 @@ export default function Contact() {
                   autoComplete="name"
                   value={formState.name}
                   onChange={(e) => setFormState({ ...formState, name: e.target.value })}
-                  className="w-full bg-background-secondary/50 border border-foreground/10 rounded-sm px-4 py-3 font-inter text-foreground placeholder:text-foreground-muted/50 focus:outline-none focus:border-sakura/40 transition-colors duration-300"
+                  className="w-full bg-background-secondary/50 border border-foreground/10 rounded-xl px-4 py-3 font-inter text-foreground placeholder:text-foreground-muted/50 focus:outline-none focus:border-sakura/40 transition-colors duration-300"
                   placeholder="Your name"
                   required
                 />
@@ -207,7 +207,7 @@ export default function Contact() {
                   autoComplete="email"
                   value={formState.email}
                   onChange={(e) => setFormState({ ...formState, email: e.target.value })}
-                  className="w-full bg-background-secondary/50 border border-foreground/10 rounded-sm px-4 py-3 font-inter text-foreground placeholder:text-foreground-muted/50 focus:outline-none focus:border-sakura/40 transition-colors duration-300"
+                  className="w-full bg-background-secondary/50 border border-foreground/10 rounded-xl px-4 py-3 font-inter text-foreground placeholder:text-foreground-muted/50 focus:outline-none focus:border-sakura/40 transition-colors duration-300"
                   placeholder="your@email.com"
                   required
                 />
@@ -222,7 +222,7 @@ export default function Contact() {
                   value={formState.message}
                   onChange={(e) => setFormState({ ...formState, message: e.target.value })}
                   rows={5}
-                  className="w-full bg-background-secondary/50 border border-foreground/10 rounded-sm px-4 py-3 font-inter text-foreground placeholder:text-foreground-muted/50 focus:outline-none focus:border-sakura/40 transition-colors duration-300 resize-none"
+                  className="w-full bg-background-secondary/50 border border-foreground/10 rounded-xl px-4 py-3 font-inter text-foreground placeholder:text-foreground-muted/50 focus:outline-none focus:border-sakura/40 transition-colors duration-300 resize-none"
                   placeholder="Tell me about your project..."
                   required
                 />
@@ -231,7 +231,7 @@ export default function Contact() {
               <m.button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full flex items-center justify-center gap-3 px-6 py-4 bg-sakura/20 border border-sakura/40 rounded-sm text-sm font-inter text-foreground tracking-wider hover:bg-sakura/30 transition-all duration-300 disabled:opacity-50"
+                className="w-full flex items-center justify-center gap-3 px-6 py-4 bg-sakura/20 border border-sakura/40 rounded-xl text-sm font-inter text-foreground tracking-wider hover:bg-sakura/30 transition-all duration-300 disabled:opacity-50"
                 whileHover={{ scale: 1.02, boxShadow: "0 0 30px rgba(255,126,182,0.2)" }}
                 whileTap={{ scale: 0.98 }}
               >
@@ -246,7 +246,7 @@ export default function Contact() {
                 ) : (
                   <>
                     SEND MESSAGE
-                    <Send className="w-4 h-4" />
+                    <PaperPlane className="w-4 h-4" />
                   </>
                 )}
               </m.button>

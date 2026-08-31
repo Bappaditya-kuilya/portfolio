@@ -4,7 +4,6 @@ export const runtime = "edge";
 export const size = { width: 32, height: 32 };
 export const contentType = "image/png";
 
-// Sakura-pink "B" monogram on the site's near-black background.
 export default function Icon() {
   return new ImageResponse(
     (
@@ -15,15 +14,15 @@ export default function Icon() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          background: "#030303",
+          background: "#000000",
           borderRadius: "6px",
           color: "#ff7eb6",
-          fontSize: 24,
+          fontSize: 16,
           fontWeight: 700,
           fontFamily: "Georgia, serif",
         }}
       >
-        B
+        BK
       </div>
     ),
     { ...size }

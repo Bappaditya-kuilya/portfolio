@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { m, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { useState } from "react";
-import { Github, Linkedin, Mail, ArrowRight, Flower2, Camera } from "lucide-react";
+import { GithubLogo, LinkedinLogo, Envelope, ArrowRight, Flower, Camera } from "@phosphor-icons/react";
 import Magnetic from "../components/Magnetic";
 
 export default function Hero() {
@@ -90,15 +90,18 @@ export default function Hero() {
               transition={{ duration: 1, delay: 0.4 }}
               className="space-y-2"
             >
-              <h1 className="font-cinzel text-5xl md:text-7xl lg:text-8xl text-foreground leading-[0.9] tracking-tight">
+              <h1 className="sr-only">
+                Bappaditya Kuilya — AI Systems Engineer
+              </h1>
+              <span className="block font-cinzel text-[clamp(3rem,8vw,7rem)] md:text-[clamp(4rem,9vw,8rem)] lg:text-[clamp(5rem,10vw,9rem)] text-foreground leading-[0.88] tracking-[-0.03em]" aria-hidden="true">
                 Elegance
-              </h1>
-              <h1 className="font-cinzel text-5xl md:text-7xl lg:text-8xl text-foreground leading-[0.9] tracking-tight">
+              </span>
+              <span className="block font-cinzel text-[clamp(3rem,8vw,7rem)] md:text-[clamp(4rem,9vw,8rem)] lg:text-[clamp(5rem,10vw,9rem)] text-foreground leading-[0.88] tracking-[-0.03em]" aria-hidden="true">
                 In Every
-              </h1>
-              <h1 className="font-cinzel text-5xl md:text-7xl lg:text-8xl text-gradient-sakura leading-[0.9] tracking-tight">
+              </span>
+              <span className="block font-cinzel text-[clamp(3rem,8vw,7rem)] md:text-[clamp(4rem,9vw,8rem)] lg:text-[clamp(5rem,10vw,9rem)] text-gradient-sakura leading-[0.88] tracking-[-0.03em]" aria-hidden="true">
                 Line.
-              </h1>
+              </span>
             </m.div>
 
             {/* Subheading */}
@@ -119,7 +122,7 @@ export default function Hero() {
               className="flex items-center gap-4 max-w-md"
             >
               <div className="h-px flex-1 bg-sakura/30" />
-              <Flower2 className="w-4 h-4 text-sakura/50" />
+                             <Flower className="w-4 h-4 text-sakura/50" />
               <div className="h-px flex-1 bg-sakura/30" />
             </m.div>
 
@@ -128,7 +131,7 @@ export default function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 1 }}
-              className="flex flex-wrap gap-4"
+               className="flex flex-wrap gap-5"
             >
               <Magnetic>
                 <m.a
@@ -137,8 +140,8 @@ export default function Hero() {
                     e.preventDefault();
                     document.querySelector("#resume")?.scrollIntoView({ behavior: "smooth" });
                   }}
-                  className="group flex items-center gap-3 px-8 py-4 bg-sakura/20 border border-sakura/40 rounded-sm text-foreground font-inter text-sm tracking-wider hover:bg-sakura/30 transition-all duration-500"
-                  whileHover={{ scale: 1.02, boxShadow: "0 0 30px rgba(255,126,182,0.2)" }}
+                  className="group relative z-10 flex items-center gap-3 px-8 py-4 glass-btn text-foreground font-inter text-sm tracking-wider"
+                  whileHover={{ scale: 1.03, boxShadow: "0 0 30px rgba(255,126,182,0.2)" }}
                   whileTap={{ scale: 0.98 }}
                 >
                   VIEW RESUME
@@ -153,8 +156,8 @@ export default function Hero() {
                     e.preventDefault();
                     document.querySelector("#projects")?.scrollIntoView({ behavior: "smooth" });
                   }}
-                  className="group flex items-center gap-3 px-8 py-4 border border-foreground/20 rounded-sm text-foreground-muted font-inter text-sm tracking-wider hover:border-foreground/40 hover:text-foreground transition-all duration-500"
-                  whileHover={{ scale: 1.02 }}
+                  className="group relative z-10 flex items-center gap-3 px-8 py-4 glass-ghost text-foreground-muted font-inter text-sm tracking-wider"
+                  whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.98 }}
                 >
                   EXPLORE PROJECTS
@@ -171,16 +174,16 @@ export default function Hero() {
               className="flex items-center gap-6 pt-4"
             >
               {[
-                { icon: Github, href: githubUrl, label: "GitHub" },
-                { icon: Linkedin, href: "https://linkedin.com/in/bappaditya-kuilya", label: "LinkedIn" },
-                { icon: Mail, href: "mailto:bappadityakuilya@gmail.com", label: "Email" },
+                { icon: GithubLogo, href: githubUrl, label: "GitHub" },
+                { icon: LinkedinLogo, href: "https://linkedin.com/in/bappaditya-kuilya", label: "LinkedIn" },
+                { icon: Envelope, href: "mailto:bappadityakuilya@gmail.com", label: "Email" },
               ].map((social) => (
                 <m.a
                   key={social.label}
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-3 border border-foreground/10 rounded-sm text-foreground-muted hover:text-sakura hover:border-sakura/30 transition-all duration-300"
+                  className="p-3 glass-ghost rounded-xl text-foreground-muted hover:text-sakura hover:border-sakura/30 transition-all duration-300"
                   whileHover={{ y: -3, boxShadow: "0 0 20px rgba(255,126,182,0.15)" }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -213,12 +216,12 @@ export default function Hero() {
               style={{ x: portraitX, y: portraitY }}
               className="relative h-[26rem] w-72 sm:h-[28rem] sm:w-80"
             >
-              <div className="absolute inset-0 rounded-sm border border-sakura/20 bg-gradient-to-b from-white/[0.04] via-background-tertiary/50 to-background/90 shadow-[0_30px_100px_rgba(255,126,182,0.12)]" />
-              <div className="absolute inset-4 rounded-sm border border-sakura/10" />
-              <div className="absolute -inset-px rounded-sm bg-[linear-gradient(115deg,transparent,rgba(255,255,255,0.2),transparent)] opacity-20" />
+              <div className="absolute inset-0 rounded-xl border border-white/[0.1] glass-inline" />
+              <div className="absolute inset-4 rounded-xl border border-white/[0.06]" />
+              <div className="absolute -inset-px rounded-xl bg-[linear-gradient(115deg,transparent,rgba(255,255,255,0.2),transparent)] opacity-20" />
 
               <div className="absolute inset-8 flex flex-col">
-                <div className="relative h-72 overflow-hidden rounded-sm border border-sakura/15 bg-background-secondary sm:h-80">
+                  <div className="relative h-72 overflow-hidden rounded-xl border border-white/[0.08] bg-background-secondary sm:h-80">
                   <div className="absolute inset-0 flex items-center justify-center bg-[radial-gradient(circle_at_50%_20%,rgba(255,126,182,0.14),transparent_58%)]">
                     <div className="flex h-28 w-28 items-center justify-center rounded-full border border-sakura/20 bg-background/70 backdrop-blur-md">
                       <Camera className="h-9 w-9 text-sakura/60" />

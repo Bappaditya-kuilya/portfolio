@@ -19,6 +19,7 @@ const Contact = dynamic(() => import("./sections/Contact"));
 export default function Home() {
   return (
     <main className="relative min-h-screen bg-background">
+      <div className="grain" />
       {/* Atmospheric overlays (deferred, non-blocking) */}
       <Atmosphere />
 

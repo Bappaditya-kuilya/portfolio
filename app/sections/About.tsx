@@ -1,7 +1,7 @@
 "use client";
 
 import { m, useInView } from "framer-motion";
-import { MapPin, GraduationCap, Target, Activity, Heart, Languages } from "lucide-react";
+import { MapPin, GraduationCap, Target, Pulse, Heart, Translate } from "@phosphor-icons/react";
 import { useRef } from "react";
 
 const infoCards = [
@@ -25,7 +25,7 @@ const infoCards = [
     description: "Intelligent automation & LLM engineering",
   },
   {
-    icon: Activity,
+    icon: Pulse,
     label: "Status",
     value: "Available",
     description: "Open to opportunities & collaborations",
@@ -37,7 +37,7 @@ const infoCards = [
     description: "Deep learning, NLP, System design",
   },
   {
-    icon: Languages,
+    icon: Translate,
     label: "Languages",
     value: "English, Bengali",
     description: "Hindi — conversational",
@@ -54,10 +54,10 @@ function InfoCard({ card, index }: { card: typeof infoCards[0]; index: number })
       initial={{ opacity: 0, y: 30 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.6, delay: index * 0.1 }}
-      className="glass-card rounded-sm p-6 group hover:scale-[1.02] transition-all duration-500"
+      className="glass-card rounded-xl p-6 group hover:scale-[1.02] transition-all duration-500"
     >
       <div className="flex items-start gap-4">
-        <div className="p-3 rounded-sm bg-sakura/10 text-sakura group-hover:bg-sakura/20 transition-colors duration-300">
+        <div className="p-3 rounded-xl bg-sakura/10 text-sakura group-hover:bg-sakura/20 transition-colors duration-300">
           <card.icon className="w-5 h-5" />
         </div>
         <div className="space-y-1">
@@ -119,9 +119,9 @@ export default function About() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="lg:col-span-2 space-y-6"
           >
-            <div className="glass-card rounded-sm p-8">
+            <div className="glass-card rounded-xl p-8">
               <p className="font-inter text-foreground-dim leading-relaxed text-lg mb-6">
-                I&apos;m a Computer Science Engineering student passionate about creating AI-powered systems, 
+                I&apos;m Bappaditya Kuilya, a Computer Science Engineering student at UEM Kolkata passionate about creating AI-powered systems, 
                 automation tools, and seamless digital experiences.
               </p>
               <p className="font-inter text-foreground-muted leading-relaxed mb-6">
@@ -141,7 +141,7 @@ export default function About() {
             </div>
 
             {/* Quote */}
-            <div className="glass-card rounded-sm p-6 border-l-2 border-sakura/30">
+            <div className="glass-card rounded-xl p-6 border-l-2 border-sakura/30">
               <p className="font-cormorant text-xl text-foreground-dim italic leading-relaxed">
                 &ldquo;Discipline, Grace, Precision. That is the way I build.&rdquo;
               </p>
