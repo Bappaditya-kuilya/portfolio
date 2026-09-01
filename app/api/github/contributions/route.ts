@@ -183,6 +183,10 @@ export async function GET(request: NextRequest) {
   const { from, to } = buildYearRange();
   const token = process.env.GITHUB_TOKEN;
 
+  const cacheHeaders = {
+    "Cache-Control": "public, s-maxage=900, stale-while-revalidate=3600",
+  };
+
   try {
     if (token) {
       const [authenticatedResult, publicResult] = await Promise.allSettled([
@@ -190,32 +194,29 @@ export async function GET(request: NextRequest) {
         fetchPublicContributionCalendar(username, from, to),
       ]);
 
-      if (authenticatedResult.status === "fulfilled" && publicResult.status === "fulfilled") {
-        const authenticatedTotal = getContributionTotal(authenticatedResult.value.days);
-        const publicTotal = getContributionTotal(publicResult.value.days);
-
-        return NextResponse.json(publicTotal > authenticatedTotal ? publicResult.value : authenticatedResult.value);
+      if (authenticatedResult.status === "fulfilled") {
+        console.log(`[contributions] source=authenticated username=${username} total=${authenticatedResult.value.total}`);
+        return NextResponse.json(authenticatedResult.value, { headers: cacheHeaders });
       }
 
       if (publicResult.status === "fulfilled") {
-        return NextResponse.json(publicResult.value);
-      }
-
-      if (authenticatedResult.status === "fulfilled") {
-        return NextResponse.json(authenticatedResult.value);
+        console.log(`[contributions] source=public username=${username} total=${publicResult.value.total} (authenticated failed)`);
+        return NextResponse.json(publicResult.value, { headers: cacheHeaders });
       }
 
       return NextResponse.json({ error: "Unable to load contributions" }, { status: 500 });
     }
 
     const result = await fetchPublicContributionCalendar(username, from, to);
+    console.log(`[contributions] source=public username=${username} total=${result.total} (no token)`);
 
-    return NextResponse.json(result);
+    return NextResponse.json(result, { headers: cacheHeaders });
   } catch (error) {
     if (token) {
       try {
         const fallback = await fetchPublicContributionCalendar(username, from, to);
-        return NextResponse.json(fallback);
+        console.log(`[contributions] source=public username=${username} total=${fallback.total} (fallback)`);
+        return NextResponse.json(fallback, { headers: cacheHeaders });
       } catch {
         return NextResponse.json({ error: "Unable to load contributions" }, { status: 500 });
       }
