@@ -1,7 +1,7 @@
 "use client";
 
 import { m, useInView } from "framer-motion";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Download, Eye, FileText, Trophy, BookOpen, Briefcase, Code, X } from "@phosphor-icons/react";
 
 const resumePdfPath = "/resume.pdf";
@@ -49,6 +49,15 @@ export default function Resume() {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+
+  useEffect(() => {
+    if (!isPreviewOpen) return;
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setIsPreviewOpen(false);
+    };
+    window.addEventListener("keydown", handleEscape);
+    return () => window.removeEventListener("keydown", handleEscape);
+  }, [isPreviewOpen]);
 
   return (
     <section
@@ -207,6 +216,12 @@ export default function Resume() {
             animate={{ opacity: 1 }}
             className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
             onClick={() => setIsPreviewOpen(false)}
+            onKeyDown={(e) => {
+              if (e.key === "Escape") setIsPreviewOpen(false);
+            }}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Resume preview"
           >
             <m.div
               initial={{ scale: 0.9, opacity: 0 }}
