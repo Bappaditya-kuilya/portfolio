@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#000000"/>
+      <stop offset="100%" style="stop-color:#0a0a0a"/>
+    </linearGradient>
+    <linearGradient id="sakura" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ff7eb6"/>
+      <stop offset="50%" style="stop-color:#f4b6d2"/>
+      <stop offset="100%" style="stop-color:#d48ac0"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <circle cx="900" cy="150" r="300" fill="rgba(255,126,182,0.06)" filter="blur(80px)"/>
+  <circle cx="200" cy="500" r="250" fill="rgba(139,92,246,0.04)" filter="blur(60px)"/>
+  <text x="600" y="280" text-anchor="middle" font-family="serif" font-size="72" font-weight="600" fill="url(#sakura)">Bappaditya Kuilya</text>
+  <text x="600" y="360" text-anchor="middle" font-family="sans-serif" font-size="32" fill="#a1a1aa">AI Systems Engineer</text>
+  <line x1="520" y1="400" x2="680" y2="400" stroke="rgba(255,126,182,0.3)" stroke-width="1"/>
+  <text x="600" y="460" text-anchor="middle" font-family="sans-serif" font-size="20" fill="#d8d8d8">Building intelligent systems with precision, discipline, and cinematic engineering.</text>
+</svg>
