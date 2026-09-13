@@ -10,7 +10,7 @@ const milestones = [
     title: "B.Tech Computer Science",
     organization: "University of Engineering & Management, Kolkata",
     period: "2024 — 2028 (Present)",
-    description: "Pursuing B.Tech in Computer Science Engineering with a focus on systems, software development, and AI-driven problem solving.",
+    description: "Studying CS with focus on systems, software, and AI. Hackathon winner in 2026.",
     highlights: ["AI/ML Focus", "Hackathon Winner 2026", "Engineering Journey"],
   },
   {
@@ -18,7 +18,7 @@ const milestones = [
     title: "AI Systems Engineering",
     organization: "Self-Directed Learning & Projects",
     period: "2024 — Present",
-    description: "Building intelligent systems, automation tools, and LLM-powered applications. Deep expertise in Python, TensorFlow, and modern web stacks.",
+    description: "Building AI systems, automation tools, and LLM apps. Python, TensorFlow, and modern web stacks.",
     highlights: ["AI Workflows", "Security Tooling", "LLM Optimization"],
   },
   {
@@ -26,7 +26,7 @@ const milestones = [
     title: "Full Stack Development",
     organization: "Projects, Freelance Builds & Product Prototypes",
     period: "2024 — Present",
-    description: "Designing and shipping end-to-end web products across frontend, backend, APIs, and deployment workflows with a strong product engineering mindset.",
+    description: "Shipping end-to-end web products — frontend, backend, APIs, deployment. Strong product sense.",
     highlights: ["React & Next.js", "Backend APIs", "Hackathon Winner 2026"],
   },
   {
@@ -34,7 +34,7 @@ const milestones = [
     title: "Open Source Contributor",
     organization: "GitHub Community",
     period: "2026 — Present",
-    description: "Contributing to AI/ML open source projects, building tools that help developers work smarter with language models.",
+    description: "Contributing to AI/ML open source. Building tools around language models.",
     highlights: ["LLM Tools", "Python Libraries", "Documentation"],
   },
 ];

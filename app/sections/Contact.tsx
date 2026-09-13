@@ -2,7 +2,7 @@
 
 import { m, useInView } from "framer-motion";
 import { useRef, useState } from "react";
-import { Envelope, MapPin, PaperPlane, GithubLogo, LinkedinLogo } from "@phosphor-icons/react";
+import { Envelope, MapPin, ArrowRight, GithubLogo, LinkedinLogo } from "@phosphor-icons/react";
 
 const initialFormState = { name: "", email: "", message: "" };
 const CONTACT_EMAIL = "bappadityakuilya@gmail.com";
@@ -96,7 +96,7 @@ export default function Contact() {
             Let&apos;s Create <span className="text-gradient-sakura">Together</span>
           </h2>
           <p className="font-inter text-foreground-muted max-w-xl mx-auto">
-            Have a project in mind? Let&apos;s discuss how we can build something extraordinary.
+            Have a project in mind? Let&apos;s build it.
           </p>
         </m.div>
 
@@ -169,7 +169,7 @@ export default function Contact() {
             {/* Quote */}
             <div className="glass-card rounded-xl p-6 border-l-2 border-sakura/30">
               <p className="font-cormorant text-xl text-foreground-dim italic leading-relaxed">
-                &ldquo;In the world of code, I don&apos;t chase perfection. I pursue clarity.&rdquo;
+                &ldquo;I don&apos;t chase perfection. I chase clarity.&rdquo;
               </p>
             </div>
           </m.div>
@@ -191,7 +191,7 @@ export default function Contact() {
                   autoComplete="name"
                   value={formState.name}
                   onChange={(e) => setFormState({ ...formState, name: e.target.value })}
-                  className="w-full bg-background-secondary/50 border border-foreground/10 rounded-xl px-4 py-3 font-inter text-foreground placeholder:text-foreground-muted/50 focus:outline-none"
+                  className="w-full bg-background-secondary/60 border border-foreground/15 rounded-xl px-4 py-3 font-inter text-foreground placeholder:text-foreground-muted/50 focus:outline-none focus:border-sakura/40 invalid:border-red-400/50 transition-colors duration-300"
                   placeholder="Your name"
                   required
                 />
@@ -207,7 +207,7 @@ export default function Contact() {
                   autoComplete="email"
                   value={formState.email}
                   onChange={(e) => setFormState({ ...formState, email: e.target.value })}
-                  className="w-full bg-background-secondary/50 border border-foreground/10 rounded-xl px-4 py-3 font-inter text-foreground placeholder:text-foreground-muted/50 focus:outline-none"
+                  className="w-full bg-background-secondary/60 border border-foreground/15 rounded-xl px-4 py-3 font-inter text-foreground placeholder:text-foreground-muted/50 focus:outline-none focus:border-sakura/40 invalid:border-red-400/50 transition-colors duration-300"
                   placeholder="your@email.com"
                   required
                 />
@@ -222,7 +222,7 @@ export default function Contact() {
                   value={formState.message}
                   onChange={(e) => setFormState({ ...formState, message: e.target.value })}
                   rows={5}
-                  className="w-full bg-background-secondary/50 border border-foreground/10 rounded-xl px-4 py-3 font-inter text-foreground placeholder:text-foreground-muted/50 focus:outline-none resize-none"
+                  className="w-full bg-background-secondary/60 border border-foreground/15 rounded-xl px-4 py-3 font-inter text-foreground placeholder:text-foreground-muted/50 focus:outline-none focus:border-sakura/40 invalid:border-red-400/50 transition-colors duration-300 resize-none"
                   placeholder="Tell me about your project..."
                   required
                 />
@@ -246,7 +246,7 @@ export default function Contact() {
                 ) : (
                   <>
                     SEND MESSAGE
-                    <PaperPlane className="w-4 h-4" />
+                    <ArrowRight className="w-4 h-4" />
                   </>
                 )}
               </m.button>

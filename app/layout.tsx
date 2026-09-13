@@ -53,7 +53,7 @@ export const metadata: Metadata = {
     template: "%s | Bappaditya Kuilya",
   },
   description:
-    "Bappaditya Kuilya — AI Systems Engineer from Kolkata, India. Building intelligent systems with precision, discipline, and cinematic engineering. Python, React, LLM APIs, and full-stack craft.",
+    "Bappaditya Kuilya — AI Systems Engineer from Kolkata, India. Building systems with Python, React, and LLM APIs.",
   keywords: [
     "Bappaditya Kuilya",
     "Bappaditya",
@@ -86,7 +86,7 @@ export const metadata: Metadata = {
     siteName: "Bappaditya Kuilya",
     title: "Bappaditya Kuilya | AI Systems Engineer",
     description:
-      "Building intelligent systems with precision, discipline, and cinematic engineering.",
+      "Building systems with Python, React, and LLM APIs.",
     locale: "en_US",
     images: [
       {
@@ -102,7 +102,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Bappaditya Kuilya | AI Systems Engineer",
     description:
-      "Building intelligent systems with precision, discipline, and cinematic engineering.",
+      "Building systems with Python, React, and LLM APIs.",
     creator: "@bappaditya",
     images: ["/og.svg"],
   },
@@ -186,7 +186,7 @@ const jsonLd = {
       url: siteUrl,
       name: "Bappaditya Kuilya | AI Systems Engineer",
       description:
-        "AI Systems Engineer building intelligent systems with precision, discipline, and cinematic engineering.",
+        "AI Systems Engineer building systems with Python, React, and LLM APIs.",
       isPartOf: { "@id": `${siteUrl}/#website` },
       about: { "@id": `${siteUrl}/#person` },
       lastReviewed: new Date().toISOString().split("T")[0],
@@ -218,6 +218,13 @@ export default function RootLayout({
         <meta name="author" content={PERSON_NAME} />
       </head>
       <body className="antialiased">
+        <a
+          href="#hero"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:rounded-lg focus:bg-sakura/90 focus:px-4 focus:py-2 focus:text-sm focus:font-inter focus:text-black focus:outline-none"
+        >
+          Skip to content
+        </a>
+
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

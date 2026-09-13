@@ -19,13 +19,13 @@ export default function Footer() {
 
           {/* Copyright */}
           <div className="flex items-center gap-2 font-inter text-xs text-foreground-muted">
-            <span>© 2025 Bappaditya Kuilya. All rights reserved.</span>
+            <span>© 2026 Bappaditya Kuilya. All rights reserved.</span>
           </div>
 
           {/* Tagline */}
           <div className="flex items-center gap-2">
             <span className="font-inter text-xs text-foreground-muted">
-              Crafted with code. Inspired by purpose.
+              Built with code. Driven by purpose.
             </span>
             <Heart className="w-3 h-3 text-sakura/50" />
           </div>

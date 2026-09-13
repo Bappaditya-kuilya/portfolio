@@ -49,14 +49,48 @@ export default function Resume() {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+  const modalRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     if (!isPreviewOpen) return;
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setIsPreviewOpen(false);
+
+    const previouslyFocused = document.activeElement as HTMLElement;
+    closeButtonRef.current?.focus();
+
+    const modal = modalRef.current;
+    if (!modal) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setIsPreviewOpen(false);
+        return;
+      }
+      if (e.key !== "Tab") return;
+
+      const focusable = modal.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+      );
+      if (focusable.length === 0) return;
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
     };
-    window.addEventListener("keydown", handleEscape);
-    return () => window.removeEventListener("keydown", handleEscape);
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      previouslyFocused?.focus();
+    };
   }, [isPreviewOpen]);
 
   return (
@@ -120,12 +154,13 @@ export default function Resume() {
                 <div className="h-px w-32 mx-auto bg-sakura/20" />
 
                 <p className="font-cormorant text-lg text-foreground-dim italic max-w-md mx-auto">
-                  "Building intelligent systems with precision, discipline, and cinematic engineering."
+                  "Building systems with Python, React, and LLM APIs."
                 </p>
 
                 {/* Actions */}
                 <div className="flex justify-center gap-4 pt-4">
                   <m.button
+                    ref={triggerRef}
                     onClick={() => setIsPreviewOpen(!isPreviewOpen)}
                     className="flex items-center gap-2 px-6 py-3 bg-sakura/20 border border-sakura/40 rounded-xl text-sm font-inter text-foreground hover:bg-sakura/30 transition-all duration-300"
                     whileHover={{ scale: 1.05 }}
@@ -216,14 +251,12 @@ export default function Resume() {
             animate={{ opacity: 1 }}
             className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
             onClick={() => setIsPreviewOpen(false)}
-            onKeyDown={(e) => {
-              if (e.key === "Escape") setIsPreviewOpen(false);
-            }}
             role="dialog"
             aria-modal="true"
             aria-label="Resume preview"
           >
             <m.div
+              ref={modalRef}
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               className="glass-card flex h-[92vh] w-full max-w-6xl flex-col overflow-hidden rounded-xl p-4 sm:p-6"
@@ -246,6 +279,7 @@ export default function Resume() {
                     Download
                   </a>
                   <button
+                    ref={closeButtonRef}
                     onClick={() => setIsPreviewOpen(false)}
                     aria-label="Close resume preview"
                     className="border border-foreground/10 p-2 text-foreground-muted transition-colors duration-300 hover:border-sakura/30 hover:text-foreground"

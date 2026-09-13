@@ -121,13 +121,12 @@ export default function About() {
           >
             <div className="glass-card rounded-xl p-8">
               <p className="font-inter text-foreground-dim leading-relaxed text-lg mb-6">
-                I&apos;m Bappaditya Kuilya, a Computer Science Engineering student at UEM Kolkata passionate about creating AI-powered systems, 
-                automation tools, and seamless digital experiences.
+                I&apos;m Bappaditya Kuilya, a CS engineering student at UEM Kolkata. I build AI systems, 
+                automation tools, and web apps — mostly in Python and TypeScript.
               </p>
               <p className="font-inter text-foreground-muted leading-relaxed mb-6">
-                I believe in writing clean code, building scalable architectures, and crafting products 
-                that actually make a difference. My approach combines technical precision with artistic 
-                sensibility — every line of code is written with intention.
+                I care about clean code and scalable architecture. Every line should earn its place. 
+                My approach: technical precision with a designer&apos;s eye.
               </p>
               <div className="flex items-center gap-3 pt-4 border-t border-sakura/10">
                 <div className="w-10 h-10 rounded-full bg-sakura/20 flex items-center justify-center">

@@ -107,12 +107,9 @@ function SkillCard({ skill, index }: { skill: typeof skills[0]; index: number })
         </h4>
 
         <div className="mt-auto">
-          <div className="mb-3 flex items-center justify-between">
+          <div className="mb-3">
             <span className="font-inter text-[10px] uppercase tracking-[0.24em] text-foreground-muted">
               Mastery
-            </span>
-            <span className="font-inter text-[10px] uppercase tracking-[0.24em] text-foreground-muted">
-              calibrated
             </span>
           </div>
           <div className="h-1.5 overflow-hidden rounded-full bg-black/40">
@@ -199,7 +196,7 @@ export default function Skills() {
                   Mastery Index
                 </p>
                 <p className="mt-1 font-cormorant text-2xl text-foreground">
-                  Precision stack calibrated for AI systems.
+                  Core skills across the stack.
                 </p>
               </div>
               <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full border border-sakura/20 bg-sakura/10">
@@ -213,7 +210,7 @@ export default function Skills() {
                   onClick={() => setActiveCategory(category)}
                   className={`rounded-lg border px-3 py-2 font-inter text-[10px] uppercase tracking-[0.18em] transition-all duration-300 ${
                     activeCategory === category
-                      ? "border-sakura/50 bg-sakura/15 text-foreground shadow-[0_0_22px_rgba(255,126,182,0.12)]"
+                      ? "border-sakura/60 bg-sakura/20 text-foreground shadow-[0_0_28px_rgba(255,126,182,0.2)]"
                       : "border-white/[0.08] bg-white/[0.025] text-foreground-muted hover:border-sakura/25 hover:text-foreground"
                   }`}
                 >

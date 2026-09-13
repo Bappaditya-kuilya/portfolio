@@ -266,9 +266,11 @@ function RepoCard({ repo, index }: { repo: GithubRepo; index: number }) {
       <h3 className="mb-3 font-cinzel text-2xl text-foreground transition-colors duration-300 group-hover:text-sakura">
         {repo.name.replaceAll("-", " ")}
       </h3>
-      <p className="line-clamp-3 min-h-[4.5rem] font-inter text-sm leading-relaxed text-foreground-muted">
-        {repo.description ?? "A public repository from the engineering arsenal, refined through code and iteration."}
-      </p>
+      {repo.description && (
+        <p className="line-clamp-3 min-h-[4.5rem] font-inter text-sm leading-relaxed text-foreground-muted">
+          {repo.description}
+        </p>
+      )}
 
       <div className="mt-6 flex flex-wrap gap-2">
         {repo.language && (
