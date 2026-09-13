@@ -100,7 +100,7 @@ export default function Contact() {
           </p>
         </m.div>
 
-        <div className="grid lg:grid-cols-2 gap-12 max-w-5xl mx-auto">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 max-w-5xl mx-auto">
           {/* Left - Contact Info */}
           <m.div
             initial={{ opacity: 0, x: -30 }}
@@ -115,8 +115,8 @@ export default function Contact() {
 
               <div className="space-y-6">
                 <div className="flex items-start gap-4">
-                  <div className="p-3 rounded-xl bg-sakura/10 text-sakura">
-                    <Envelope className="w-5 h-5" />
+                   <div className="p-3 rounded-xl bg-sakura/10 text-sakura">
+                     <Envelope className="w-5 h-5" />
                   </div>
                   <div>
                     <p className="font-inter text-sm text-foreground-muted mb-1">Email</p>
@@ -130,8 +130,8 @@ export default function Contact() {
                 </div>
 
                 <div className="flex items-start gap-4">
-                  <div className="p-3 rounded-xl bg-sakura/10 text-sakura">
-                    <MapPin className="w-5 h-5" />
+                   <div className="p-3 rounded-xl bg-sakura/10 text-sakura">
+                     <MapPin className="w-5 h-5" />
                   </div>
                   <div>
                     <p className="font-inter text-sm text-foreground-muted mb-1">Location</p>
@@ -155,7 +155,7 @@ export default function Contact() {
                       href={social.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="p-3 border border-foreground/10 rounded-xl text-foreground-muted hover:text-sakura hover:border-sakura/30 transition-all duration-300"
+                       className="p-3 border border-foreground/10 rounded-xl text-foreground-muted hover:text-sakura hover:border-sakura/30 transition-all duration-300"
                       whileHover={{ y: -3, boxShadow: "0 0 20px rgba(255,126,182,0.15)" }}
                       whileTap={{ scale: 0.95 }}
                     >
@@ -191,7 +191,7 @@ export default function Contact() {
                   autoComplete="name"
                   value={formState.name}
                   onChange={(e) => setFormState({ ...formState, name: e.target.value })}
-                  className="w-full bg-background-secondary/50 border border-foreground/10 rounded-xl px-4 py-3 font-inter text-foreground placeholder:text-foreground-muted/50 focus:outline-none focus:border-sakura/40 transition-colors duration-300"
+                  className="w-full bg-background-secondary/50 border border-foreground/10 rounded-xl px-4 py-3 font-inter text-foreground placeholder:text-foreground-muted/50 focus:outline-none"
                   placeholder="Your name"
                   required
                 />
@@ -207,7 +207,7 @@ export default function Contact() {
                   autoComplete="email"
                   value={formState.email}
                   onChange={(e) => setFormState({ ...formState, email: e.target.value })}
-                  className="w-full bg-background-secondary/50 border border-foreground/10 rounded-xl px-4 py-3 font-inter text-foreground placeholder:text-foreground-muted/50 focus:outline-none focus:border-sakura/40 transition-colors duration-300"
+                  className="w-full bg-background-secondary/50 border border-foreground/10 rounded-xl px-4 py-3 font-inter text-foreground placeholder:text-foreground-muted/50 focus:outline-none"
                   placeholder="your@email.com"
                   required
                 />
@@ -222,7 +222,7 @@ export default function Contact() {
                   value={formState.message}
                   onChange={(e) => setFormState({ ...formState, message: e.target.value })}
                   rows={5}
-                  className="w-full bg-background-secondary/50 border border-foreground/10 rounded-xl px-4 py-3 font-inter text-foreground placeholder:text-foreground-muted/50 focus:outline-none focus:border-sakura/40 transition-colors duration-300 resize-none"
+                  className="w-full bg-background-secondary/50 border border-foreground/10 rounded-xl px-4 py-3 font-inter text-foreground placeholder:text-foreground-muted/50 focus:outline-none resize-none"
                   placeholder="Tell me about your project..."
                   required
                 />

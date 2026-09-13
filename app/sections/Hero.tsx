@@ -67,7 +67,7 @@ export default function Hero() {
 
       {/* Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 py-32 w-full">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
           {/* Left Content */}
           <div className="space-y-8">
             {/* Japanese Text */}
@@ -93,13 +93,13 @@ export default function Hero() {
               <h1 className="sr-only">
                 Bappaditya Kuilya — AI Systems Engineer
               </h1>
-              <span className="block font-cinzel text-[clamp(3rem,8vw,7rem)] md:text-[clamp(4rem,9vw,8rem)] lg:text-[clamp(5rem,10vw,9rem)] text-foreground leading-[0.88] tracking-[-0.03em]" aria-hidden="true">
+              <span className="block font-cinzel text-[clamp(2.2rem,7vw,5rem)] md:text-[clamp(4rem,9vw,8rem)] lg:text-[clamp(5rem,10vw,9rem)] text-foreground leading-[0.88] tracking-[-0.03em]" aria-hidden="true">
                 Elegance
               </span>
-              <span className="block font-cinzel text-[clamp(3rem,8vw,7rem)] md:text-[clamp(4rem,9vw,8rem)] lg:text-[clamp(5rem,10vw,9rem)] text-foreground leading-[0.88] tracking-[-0.03em]" aria-hidden="true">
+              <span className="block font-cinzel text-[clamp(2.2rem,7vw,5rem)] md:text-[clamp(4rem,9vw,8rem)] lg:text-[clamp(5rem,10vw,9rem)] text-foreground leading-[0.88] tracking-[-0.03em]" aria-hidden="true">
                 In Every
               </span>
-              <span className="block font-cinzel text-[clamp(3rem,8vw,7rem)] md:text-[clamp(4rem,9vw,8rem)] lg:text-[clamp(5rem,10vw,9rem)] text-gradient-sakura leading-[0.88] tracking-[-0.03em]" aria-hidden="true">
+              <span className="block font-cinzel text-[clamp(2.2rem,7vw,5rem)] md:text-[clamp(4rem,9vw,8rem)] lg:text-[clamp(5rem,10vw,9rem)] text-gradient-sakura leading-[0.88] tracking-[-0.03em]" aria-hidden="true">
                 Line.
               </span>
             </m.div>

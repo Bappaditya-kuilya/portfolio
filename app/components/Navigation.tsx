@@ -68,7 +68,7 @@ export default function Navigation() {
         className={cn(
           "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
           isScrolled
-            ? "bg-background/80 backdrop-blur-xl border-b border-sakura/10"
+            ? "nav-glass"
             : "bg-transparent"
         )}
       >

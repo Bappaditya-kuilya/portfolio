@@ -111,7 +111,7 @@ export default function About() {
           </h2>
         </m.div>
 
-        <div className="grid lg:grid-cols-5 gap-12">
+        <div className="grid lg:grid-cols-5 gap-8 lg:gap-12">
           {/* Bio */}
           <m.div
             initial={{ opacity: 0, x: -30 }}

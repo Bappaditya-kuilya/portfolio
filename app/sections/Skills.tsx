@@ -59,7 +59,7 @@ function SkillCard({ skill, index }: { skill: typeof skills[0]; index: number })
       initial={{ opacity: 0, y: 28, rotateX: 10 }}
       animate={isInView ? { opacity: 1, y: 0, rotateX: 0 } : {}}
       transition={{ duration: 0.65, delay: index * 0.045, ease: [0.22, 1, 0.36, 1] }}
-      className="group relative min-h-[16.5rem] overflow-hidden rounded-[6px] border border-white/[0.08] bg-[#0a090d]/70 p-5 shadow-[0_24px_90px_rgba(0,0,0,0.38)] backdrop-blur-2xl"
+      className="group relative min-h-[16.5rem] overflow-hidden rounded-xl border border-white/[0.08] bg-[#0a090d]/70 p-5 shadow-[0_24px_90px_rgba(0,0,0,0.38)] backdrop-blur-2xl"
       whileHover={{ y: -8, scale: 1.015 }}
     >
       <div className={`absolute inset-0 bg-gradient-to-br ${getAccentClass(skill.accent)} opacity-70 transition-opacity duration-500 group-hover:opacity-100`} />
@@ -70,7 +70,7 @@ function SkillCard({ skill, index }: { skill: typeof skills[0]; index: number })
       <div className="relative z-10 flex h-full flex-col">
         <div className="mb-7 flex items-start justify-between gap-4">
           <div>
-            <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-[6px] border border-white/10 bg-white/[0.045] text-foreground shadow-inner">
+            <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/[0.045] text-foreground shadow-inner">
               <skill.icon className="h-5 w-5" style={{ color: skill.color }} />
             </div>
             <p className="font-inter text-[10px] uppercase tracking-[0.24em] text-foreground-muted">
@@ -139,7 +139,7 @@ function StatCard({ stat, index }: { stat: typeof stats[0]; index: number }) {
       initial={{ opacity: 0, y: 24 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: 0.45 + index * 0.08 }}
-      className="group relative overflow-hidden rounded-[6px] border border-white/[0.08] bg-white/[0.025] p-6 text-center backdrop-blur-xl"
+      className="group relative overflow-hidden rounded-xl border border-white/[0.08] bg-white/[0.025] p-6 text-center backdrop-blur-xl"
       whileHover={{ y: -5 }}
     >
       <div className="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-sakura/60 to-transparent" />
@@ -192,7 +192,7 @@ export default function Skills() {
             </h2>
           </div>
 
-          <div className="rounded-[6px] border border-white/[0.08] bg-white/[0.025] p-5 backdrop-blur-xl">
+          <div className="rounded-xl border border-white/[0.08] bg-white/[0.025] p-5 backdrop-blur-xl">
             <div className="mb-5 flex items-center justify-between gap-4">
               <div>
                 <p className="font-inter text-[10px] uppercase tracking-[0.28em] text-sakura">
@@ -211,7 +211,7 @@ export default function Skills() {
                 <button
                   key={category}
                   onClick={() => setActiveCategory(category)}
-                  className={`rounded-[4px] border px-3 py-2 font-inter text-[10px] uppercase tracking-[0.18em] transition-all duration-300 ${
+                  className={`rounded-lg border px-3 py-2 font-inter text-[10px] uppercase tracking-[0.18em] transition-all duration-300 ${
                     activeCategory === category
                       ? "border-sakura/50 bg-sakura/15 text-foreground shadow-[0_0_22px_rgba(255,126,182,0.12)]"
                       : "border-white/[0.08] bg-white/[0.025] text-foreground-muted hover:border-sakura/25 hover:text-foreground"

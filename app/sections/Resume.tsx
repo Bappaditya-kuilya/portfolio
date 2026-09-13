@@ -87,7 +87,7 @@ export default function Resume() {
           </h2>
         </m.div>
 
-        <div className="grid lg:grid-cols-2 gap-12 items-start">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-start">
           {/* Left - Resume Viewer */}
           <m.div
             initial={{ opacity: 0, x: -30 }}
@@ -149,7 +149,7 @@ export default function Resume() {
             </div>
 
             {/* Quick Stats */}
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-3 gap-2 sm:gap-4">
               {[
                 { label: "Years", value: "3+" },
                 { label: "Projects", value: "10+" },
